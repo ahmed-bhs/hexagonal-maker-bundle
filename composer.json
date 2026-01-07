@@ -1,0 +1,39 @@
+{
+  "name": "ahmed-bhs/hexagonal-maker-bundle",
+  "type": "symfony-bundle",
+  "description": "Hexagonal Architecture Maker Bundle for Symfony - Generate Commands, Queries, and more with CQRS pattern",
+  "keywords": ["hexagonal", "architecture", "cqrs", "solid", "maker", "symfony", "command", "query"],
+  "homepage": "https://github.com/ahmed-bhs/hexagonal-maker-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ahmed EBEN HASSINE",
+      "email": "ahmedbhs123@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-json": "*",
+    "symfony/console": "^6.4|^7.0",
+    "symfony/framework-bundle": "^6.4|^7.0",
+    "symfony/maker-bundle": "^1.36",
+    "symfony/messenger": "^6.4|^7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5|^10.0",
+    "phpstan/phpstan": "^1.10",
+    "symfony/phpunit-bridge": "^6.4|^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AhmedBhs\\HexagonalMakerBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AhmedBhs\\HexagonalMakerBundle\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
