@@ -9,6 +9,8 @@
 </p>
 
 <p align="center">
+  <a href="https://packagist.org/packages/ahmed-bhs/hexagonal-maker-bundle"><img src="https://img.shields.io/packagist/v/ahmed-bhs/hexagonal-maker-bundle.svg" alt="Latest Version"></a>
+  <a href="https://github.com/ahmed-bhs/hexagonal-maker-bundle/actions"><img src="https://github.com/ahmed-bhs/hexagonal-maker-bundle/workflows/CI/badge.svg" alt="CI Status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
   <a href="https://www.php.net/"><img src="https://img.shields.io/badge/php-%3E%3D8.1-blue.svg" alt="PHP Version"></a>
   <a href="https://symfony.com/"><img src="https://img.shields.io/badge/symfony-6.4%20%7C%207.x-blue.svg" alt="Symfony"></a>

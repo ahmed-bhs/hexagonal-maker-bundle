@@ -1,3 +1,5 @@
 vendor/
 composer.lock
 phpunit.xml
+.phpstan/
+.phpunit.cache/

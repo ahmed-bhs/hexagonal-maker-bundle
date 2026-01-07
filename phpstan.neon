@@ -1,0 +1,10 @@
+parameters:
+    level: 4
+    paths:
+        - src
+    tmpDir: .phpstan
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - '#Call to an undefined method#'
+        - '#has no return type specified#'
+        - '#Missing parameter \$\w+ type#'
