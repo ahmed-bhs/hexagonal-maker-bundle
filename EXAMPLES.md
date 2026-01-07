@@ -1110,7 +1110,7 @@ services:
 ### 1. Entités Pures (Domain)
 
 ```php
-// 👌 BON - Entité pure sans dépendances
+// 😎 BON - Entité pure sans dépendances
 final class Post
 {
     private string $id;
@@ -1137,7 +1137,7 @@ final class Post
 ### 2. Validation dans Value Objects
 
 ```php
-// 👌 BON - Validation encapsulée
+// 😎 BON - Validation encapsulée
 final readonly class Email
 {
     public function __construct(public string $value)
@@ -1163,7 +1163,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 ### 3. Logique Métier dans les Entités
 
 ```php
-// 👌 BON - Logique dans l'entité
+// 😎 BON - Logique dans l'entité
 final class Order
 {
     public function confirm(): void
@@ -1192,7 +1192,7 @@ if ($order->getStatus() === 'pending' && count($order->getItems()) > 0) {
 ### 4. Ports et Adapters
 
 ```php
-// 👌 BON - Interface dans Domain, implémentation dans Infrastructure
+// 😎 BON - Interface dans Domain, implémentation dans Infrastructure
 namespace App\Blog\Post\Domain\Port;
 
 interface PostRepositoryInterface
@@ -1223,7 +1223,7 @@ final class PostService
 ### 5. Commands Immuables
 
 ```php
-// 👌 BON - Command readonly et immuable
+// 😎 BON - Command readonly et immuable
 final readonly class CreatePostCommand
 {
     public function __construct(
@@ -1249,7 +1249,7 @@ final class CreatePostCommand
 ### 6. Mapping Doctrine YAML (Pas d'Attributes)
 
 ```yaml
-# 👌 BON - Mapping YAML séparé dans Infrastructure
+# 😎 BON - Mapping YAML séparé dans Infrastructure
 App\Blog\Post\Domain\Model\Post:
     type: entity
     table: post

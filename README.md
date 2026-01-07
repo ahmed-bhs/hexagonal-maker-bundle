@@ -349,7 +349,7 @@ graph TB
 
     UI ==>|"uses"| APP
     APP ==>|"depends on"| DOMAIN
-    INFRA -.->|"👌 implements"| Ports
+    INFRA -.->|"😎 implements"| Ports
 
     style DOMAIN fill:#C8E6C9,stroke:#2E7D32,stroke-width:4px,color:#000
     style APP fill:#B3E5FC,stroke:#0277BD,stroke-width:3px,color:#000
@@ -854,11 +854,11 @@ bin/console make:hexagonal:controller blog/post CreatePost /posts/create --with-
 ```
 
 **Generates 6 files:**
-- 👌 CreatePostController.php (UI)
-- 👌 PostType.php (Form)
-- 👌 CreatePostUseCase.php (Application)
-- 👌 CreatePostCommand.php + Handler (Application)
-- 👌 CreatePostInput.php (Application)
+- 😎 CreatePostController.php (UI)
+- 😎 PostType.php (Form)
+- 😎 CreatePostUseCase.php (Application)
+- 😎 CreatePostCommand.php + Handler (Application)
+- 😎 CreatePostInput.php (Application)
 
 **Impact:** Creates complete CRUD workflow instantly!
 
@@ -870,11 +870,11 @@ bin/console make:hexagonal:entity blog/post Post --with-repository --with-id-vo
 ```
 
 **Generates 5 files:**
-- 👌 Post.php (Domain Entity)
-- 👌 Post.orm.yml (Doctrine Mapping)
-- 👌 PostRepositoryInterface.php (Domain Port)
-- 👌 DoctrinePostRepository.php (Infrastructure)
-- 👌 PostId.php (Value Object)
+- 😎 Post.php (Domain Entity)
+- 😎 Post.orm.yml (Doctrine Mapping)
+- 😎 PostRepositoryInterface.php (Domain Port)
+- 😎 DoctrinePostRepository.php (Infrastructure)
+- 😎 PostId.php (Value Object)
 
 **Impact:** Complete entity setup with persistence!
 
@@ -886,8 +886,8 @@ bin/console make:hexagonal:use-case blog/post CreatePost --with-test
 ```
 
 **Generates 2 files:**
-- 👌 CreatePostUseCase.php (Application)
-- 👌 CreatePostTest.php (Tests)
+- 😎 CreatePostUseCase.php (Application)
+- 😎 CreatePostTest.php (Tests)
 
 **Impact:** Encourages TDD from the start!
 
@@ -899,8 +899,8 @@ bin/console make:hexagonal:domain-event order/payment OrderPlaced --with-subscri
 ```
 
 **Generates 2 files:**
-- 👌 OrderPlacedEvent.php (Domain)
-- 👌 OrderPlacedSubscriber.php (Application)
+- 😎 OrderPlacedEvent.php (Domain)
+- 😎 OrderPlacedSubscriber.php (Application)
 
 **Impact:** Event-driven architecture ready to use!
 
@@ -915,10 +915,10 @@ bin/console make:hexagonal:cli-command blog/post CreatePost app:post:create --wi
 ```
 
 **Generates 4 files:**
-- 👌 CreatePostCommand.php (UI CLI)
-- 👌 CreatePostUseCase.php (Application)
-- 👌 CreatePostCommand.php + Handler (Application)
-- 👌 CreatePostInput.php (Application)
+- 😎 CreatePostCommand.php (UI CLI)
+- 😎 CreatePostUseCase.php (Application)
+- 😎 CreatePostCommand.php + Handler (Application)
+- 😎 CreatePostInput.php (Application)
 
 **Impact:** Shares business logic between web and CLI interfaces!
 
@@ -1152,7 +1152,7 @@ declare(strict_types=1);
 namespace App\User\Account\Domain\Model;
 
 /**
- * ⚠️ PURE Domain Entity - No framework dependencies
+ * 👀 PURE Domain Entity - No framework dependencies
  * Doctrine mapping is in:
  * Infrastructure/Persistence/Doctrine/Orm/Mapping/User.orm.yml
  */
@@ -1208,7 +1208,7 @@ App\User\Account\Domain\Model\User:
 
 This is the **correct approach** for true Hexagonal Architecture and DDD:
 
-**👌 Advantages:**
+**😎 Advantages:**
 - **Pure Domain** - Zero framework dependencies in domain entities
 - **Easy Testing** - No need to mock Doctrine infrastructure
 - **Technology Independence** - Switch ORMs without touching domain code
@@ -1452,12 +1452,12 @@ class Post
 }
 ```
 
-**👌 Hexagonal approach (domain stays pure):**
+**😎 Hexagonal approach (domain stays pure):**
 ```php
 // Domain entity - PURE PHP
 class Post
 {
-    private string $slug;           // 👌 No Gedmo dependency
+    private string $slug;           // 😎 No Gedmo dependency
     private \DateTimeInterface $createdAt;
 
     public function __construct(string $title)
@@ -2044,12 +2044,12 @@ App\Blog\Post\Domain\Model\Post:
 
 | Benefit | Description |
 |---------|-------------|
-| 👌 **Pure Domain** | Zero framework/library dependencies in domain entities |
-| 👌 **Technology Independence** | Easy to switch from Gedmo to another solution |
-| 👌 **Easy Testing** | Domain entities remain simple POPOs (Plain Old PHP Objects) |
-| 👌 **Clear Separation** | Infrastructure concerns stay in Infrastructure layer |
-| 👌 **True Hexagonal** | Respects dependency inversion principle |
-| 👌 **All Extensions Work** | Full compatibility with all Gedmo extensions |
+| 😎 **Pure Domain** | Zero framework/library dependencies in domain entities |
+| 😎 **Technology Independence** | Easy to switch from Gedmo to another solution |
+| 😎 **Easy Testing** | Domain entities remain simple POPOs (Plain Old PHP Objects) |
+| 😎 **Clear Separation** | Infrastructure concerns stay in Infrastructure layer |
+| 😎 **True Hexagonal** | Respects dependency inversion principle |
+| 😎 **All Extensions Work** | Full compatibility with all Gedmo extensions |
 
 ### 7.4.7 References
 
@@ -2104,9 +2104,9 @@ bin/console make:hexagonal:repository user/account User
 ```
 
 **Generates:**
-- 👌 Port: `Domain/Port/UserRepositoryInterface.php`
-- 👌 Adapter: `Infrastructure/Persistence/Doctrine/DoctrineUserRepository.php`
-- 👌 Mapping: `Infrastructure/Persistence/Doctrine/Orm/Mapping/User.orm.yml`
+- 😎 Port: `Domain/Port/UserRepositoryInterface.php`
+- 😎 Adapter: `Infrastructure/Persistence/Doctrine/DoctrineUserRepository.php`
+- 😎 Mapping: `Infrastructure/Persistence/Doctrine/Orm/Mapping/User.orm.yml`
 
 **Example - Domain Port:**
 ```php
@@ -2154,8 +2154,8 @@ bin/console make:hexagonal:message-handler user/account SendWelcomeEmail --with-
 ```
 
 **Generates:**
-- 👌 Handler: `Infrastructure/Messaging/Handler/SendWelcomeEmailHandler.php`
-- 👌 Message: `Application/Message/SendWelcomeEmailMessage.php` (with `--with-message`)
+- 😎 Handler: `Infrastructure/Messaging/Handler/SendWelcomeEmailHandler.php`
+- 😎 Message: `Application/Message/SendWelcomeEmailMessage.php` (with `--with-message`)
 
 **Example - Message (DTO):**
 ```php
@@ -2298,9 +2298,9 @@ services:
 ```
 
 **Benefits:**
-- 👌 Easy to switch from SymfonyMailer to SendGrid (just change config)
-- 👌 Easy to mock in tests
-- 👌 Domain doesn't know about Symfony
+- 😎 Easy to switch from SymfonyMailer to SendGrid (just change config)
+- 😎 Easy to mock in tests
+- 😎 Domain doesn't know about Symfony
 
 ---
 
@@ -2453,23 +2453,23 @@ src/Shared/Infrastructure/Persistence/Migrations/Version20250106120000.php
 ```
 
 **Why centralized migrations?**
-- 👌 Single source of truth for database schema
-- 👌 Migrations execute in order (no conflicts between modules)
-- 👌 Easier to track schema evolution
+- 😎 Single source of truth for database schema
+- 😎 Migrations execute in order (no conflicts between modules)
+- 😎 Easier to track schema evolution
 - 🌪️ Modules are slightly coupled through DB schema (acceptable trade-off)
 
 ### 7.6.5 When to Use Shared vs Module
 
 | Component | Shared | Module | Reasoning |
 |-----------|--------|--------|-----------|
-| **Email VO** | 👌 | 🌪️ | Same validation everywhere |
-| **Money VO** | 👌 | 🌪️ | Same currency logic everywhere |
-| **Uuid VO** | 👌 | 🌪️ | Generic identifier |
-| **UserException** | 🌪️ | 👌 | Specific to User module |
-| **User Entity** | 🌪️ | 👌 | Bounded context specific |
-| **NotFoundException** | 👌 | 🌪️ | Generic exception |
-| **Migrations** | 👌 | 🌪️ | Database-wide changes |
-| **Bus Interfaces** | 👌 | 🌪️ | Application-wide infrastructure |
+| **Email VO** | 😎 | 🌪️ | Same validation everywhere |
+| **Money VO** | 😎 | 🌪️ | Same currency logic everywhere |
+| **Uuid VO** | 😎 | 🌪️ | Generic identifier |
+| **UserException** | 🌪️ | 😎 | Specific to User module |
+| **User Entity** | 🌪️ | 😎 | Bounded context specific |
+| **NotFoundException** | 😎 | 🌪️ | Generic exception |
+| **Migrations** | 😎 | 🌪️ | Database-wide changes |
+| **Bus Interfaces** | 😎 | 🌪️ | Application-wide infrastructure |
 
 **Golden Rule:**
 > If 3+ modules need the same code → Move to Shared
@@ -2479,10 +2479,10 @@ src/Shared/Infrastructure/Persistence/Migrations/Version20250106120000.php
 
 | Benefit | Description |
 |---------|-------------|
-| 👌 **DRY Principle** | Avoid duplicating Email, Uuid, Money across modules |
-| 👌 **Consistency** | Same validation logic everywhere |
-| 👌 **Maintainability** | Fix once, applies everywhere |
-| ⚠️ **Coupling** | Modules depend on Shared (acceptable trade-off) |
+| 😎 **DRY Principle** | Avoid duplicating Email, Uuid, Money across modules |
+| 😎 **Consistency** | Same validation logic everywhere |
+| 😎 **Maintainability** | Fix once, applies everywhere |
+| 👀 **Coupling** | Modules depend on Shared (acceptable trade-off) |
 
 ### 7.6.7 References
 
