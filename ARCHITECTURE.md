@@ -239,7 +239,7 @@ graph LR
 
     Primary ==>|"calls"| UseCases
     UseCases ==>|"uses"| Ports
-    Secondary -.->|"😎 implements"| Ports
+    Secondary -.->|"🎯 implements"| Ports
 
     style Core fill:#C8E6C9,stroke:#2E7D32,stroke-width:4px,color:#000
     style Primary fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#000

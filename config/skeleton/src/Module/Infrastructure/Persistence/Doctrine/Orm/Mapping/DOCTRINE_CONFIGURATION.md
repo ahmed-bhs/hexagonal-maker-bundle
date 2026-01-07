@@ -6,8 +6,8 @@ This directory contains Doctrine ORM mapping files (YAML format) for your domain
 
 In **Hexagonal Architecture**, we keep the **Domain layer PURE** - free from infrastructure dependencies.
 
-- 😎 **Domain Entities** (`Domain/Model/*.php`) - No Doctrine attributes, pure PHP
-- 😎 **Doctrine Mapping** (`Infrastructure/Persistence/Doctrine/Orm/Mapping/*.orm.yml`) - Infrastructure concern
+- 🎯 **Domain Entities** (`Domain/Model/*.php`) - No Doctrine attributes, pure PHP
+- 🎯 **Doctrine Mapping** (`Infrastructure/Persistence/Doctrine/Orm/Mapping/*.orm.yml`) - Infrastructure concern
 
 This separation allows:
 - Domain logic independent of persistence framework

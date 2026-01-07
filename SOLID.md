@@ -482,7 +482,7 @@ graph BT
     Port["🔗 Domain Ports<br/><small>UserRepositoryInterface</small>"]
     App["⚙️ Application<br/><small>RegisterUserHandler</small>"]
 
-    Infra -.->|"😎 implements"| Port
+    Infra -.->|"🎯 implements"| Port
     App ==>|"uses"| Port
 
     style Port fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#000
@@ -650,8 +650,8 @@ graph TB
     end
 
     UI ==>|"uses"| APP
-    APP ==>|"😎 depends on"| DOMAIN
-    INFRA -.->|"😎 implements"| Ports
+    APP ==>|"🎯 depends on"| DOMAIN
+    INFRA -.->|"🎯 implements"| Ports
 
     style DOMAIN fill:#C8E6C9,stroke:#2E7D32,stroke-width:4px,color:#000
     style APP fill:#B3E5FC,stroke:#0277BD,stroke-width:3px,color:#000

@@ -91,7 +91,7 @@ Think about your laptop and how it connects to external devices:
 - Your laptop defines: "I need a USB port"
 - Devices provide: "I implement USB"
 - Change devices anytime without changing the laptop
-- This is **Hexagonal Architecture** 😎
+- This is **Hexagonal Architecture** 🎯
 
 **Mapping to Software:**
 
@@ -121,7 +121,7 @@ class OrderService {
 }
 // Problem: Want MongoDB? Rewrite OrderService!
 
-// 😎 Hexagonal: Domain depends on interface (USB port)
+// 🎯 Hexagonal: Domain depends on interface (USB port)
 class PlaceOrderHandler {
     public function __construct(
         private OrderRepositoryInterface $repo  // Just a port!
@@ -170,15 +170,15 @@ graph BT
     B["🔗 Ports<br/><small>Interfaces</small>"]
     A["💎 Domain<br/><small>Business Logic - CORE</small>"]
 
-    C -.->|"😎 implements"| B
-    B ==>|"😎 defined by"| A
+    C -.->|"🎯 implements"| B
+    B ==>|"🎯 defined by"| A
 
     style A fill:#C8E6C9,stroke:#2E7D32,stroke-width:4px,color:#000,rx:10,ry:10
     style B fill:#FFF9C4,stroke:#F9A825,stroke-width:3px,color:#000
     style C fill:#F8BBD0,stroke:#C2185B,stroke-width:3px,color:#000
 ```
 
-**Solution:** Change database = new adapter, business logic untouched 😎
+**Solution:** Change database = new adapter, business logic untouched 🎯
 
 ### 2.3.2 Practical Implications
 
@@ -358,7 +358,7 @@ This is the most powerful technical argument for maintaining the 5-day velocity:
 
 **Example:**
 ```php
-// 😎 Hexagonal: Test in 10ms
+// 🎯 Hexagonal: Test in 10ms
 $handler = new PlaceOrderHandler(new InMemoryOrderRepository());
 $result = $handler->handle($command);
 $this->assertTrue($result->isSuccess());
@@ -514,7 +514,7 @@ graph LR
     A["💡 What does the<br/>business need?"]
     B["📋 Define domain<br/>rules first"]
     C["🔧 Infrastructure adapts<br/>to serve those rules"]
-    D["😎 Infrastructure<br/>serves domain"]
+    D["🎯 Infrastructure<br/>serves domain"]
 
     A ==> B ==> C ==> D
 
@@ -563,29 +563,29 @@ What do you need to create?
 ├─────────────────────────────────────────────────────────────────
 │
 ├─ 1️⃣ Entity (User, Order, Product)?
-│  └─ 😎 bin/console make:hexagonal:entity user/account User [--with-repository] [--with-id-vo]
+│  └─ 🎯 bin/console make:hexagonal:entity user/account User [--with-repository] [--with-id-vo]
 │     Generates: Entity + YAML mapping
 │     Options:
 │       --with-repository → adds Port interface + Doctrine adapter
 │       --with-id-vo → adds UserId value object
 │
 ├─ 2️⃣ Value Object (Email, Money, Address)?
-│  └─ 😎 bin/console make:hexagonal:value-object user/account Email
+│  └─ 🎯 bin/console make:hexagonal:value-object user/account Email
 │
 ├─ 3️⃣ Domain Exception (InvalidEmail, InsufficientFunds)?
-│  └─ 😎 bin/console make:hexagonal:exception user/account InvalidEmailException
+│  └─ 🎯 bin/console make:hexagonal:exception user/account InvalidEmailException
 │
 ├─ 4️⃣ Domain Event (OrderPlaced, UserRegistered)?
-│  └─ 😎 bin/console make:hexagonal:domain-event order/payment OrderPlaced [--with-subscriber]
+│  └─ 🎯 bin/console make:hexagonal:domain-event order/payment OrderPlaced [--with-subscriber]
 │     Options:
 │       --with-subscriber → adds event subscriber in Application layer
 │
 ├─ 5️⃣ Domain Service (PriceCalculator, IdGenerator)?
-│  └─ 😎 Create manually - Concrete class in Domain/Service/
+│  └─ 🎯 Create manually - Concrete class in Domain/Service/
 │     No interface needed (pure business logic)
 │
 ├─ 6️⃣ Repository (data access)?
-│  └─ 😎 bin/console make:hexagonal:repository user/account User
+│  └─ 🎯 bin/console make:hexagonal:repository user/account User
 │     Generates: Port interface + Doctrine adapter
 │
 │
@@ -594,25 +594,25 @@ What do you need to create?
 ├─────────────────────────────────────────────────────────────────
 │
 ├─ 7️⃣ Command (write operation)?
-│  └─ 😎 bin/console make:hexagonal:command user/account register [--factory] [--with-tests]
+│  └─ 🎯 bin/console make:hexagonal:command user/account register [--factory] [--with-tests]
 │     Options:
 │       --factory → adds entity factory
 │       --with-tests → adds unit + integration tests
 │
 ├─ 8️⃣ Query (read operation)?
-│  └─ 😎 bin/console make:hexagonal:query user/account find-by-id
+│  └─ 🎯 bin/console make:hexagonal:query user/account find-by-id
 │     Generates: Query + Handler + Response
 │
 ├─ 9️⃣ UseCase?
-│  └─ 😎 bin/console make:hexagonal:use-case user/account CreateUser [--with-test]
+│  └─ 🎯 bin/console make:hexagonal:use-case user/account CreateUser [--with-test]
 │     Options:
 │       --with-test → adds test (KernelTestCase)
 │
 ├─ 🔟 Input DTO?
-│  └─ 😎 bin/console make:hexagonal:input user/account CreateUserInput
+│  └─ 🎯 bin/console make:hexagonal:input user/account CreateUserInput
 │
 ├─ 1️⃣1️⃣ Event Subscriber (business workflow)?
-│  └─ 😎 bin/console make:hexagonal:event-subscriber order/payment OrderPlaced --layer=application
+│  └─ 🎯 bin/console make:hexagonal:event-subscriber order/payment OrderPlaced --layer=application
 │
 │
 ├─────────────────────────────────────────────────────────────────
@@ -620,17 +620,17 @@ What do you need to create?
 ├─────────────────────────────────────────────────────────────────
 │
 ├─ 1️⃣2️⃣ Controller?
-│  └─ 😎 bin/console make:hexagonal:controller user/account CreateUser /users/create [--with-workflow]
+│  └─ 🎯 bin/console make:hexagonal:controller user/account CreateUser /users/create [--with-workflow]
 │     Options:
 │       --with-workflow → adds Form + UseCase + Command + Input (6 files!)
 │
 ├─ 1️⃣3️⃣ Form?
-│  └─ 😎 bin/console make:hexagonal:form user/account User [--with-command --action=Create]
+│  └─ 🎯 bin/console make:hexagonal:form user/account User [--with-command --action=Create]
 │     Options:
 │       --with-command → adds Command + Input
 │
 ├─ 1️⃣4️⃣ CLI Command?
-│  └─ 😎 bin/console make:hexagonal:cli-command user/account CreateUser app:user:create [--with-use-case]
+│  └─ 🎯 bin/console make:hexagonal:cli-command user/account CreateUser app:user:create [--with-use-case]
 │     Options:
 │       --with-use-case → adds UseCase + Command + Input
 │
@@ -640,22 +640,22 @@ What do you need to create?
 ├─────────────────────────────────────────────────────────────────
 │
 ├─ 1️⃣5️⃣ External Service (Email, FileStorage, Payment, Cache, Notification, etc.)?
-│  └─ 😎 Create manually - Port + Adapter pattern
+│  └─ 🎯 Create manually - Port + Adapter pattern
 │     Step 1: Create interface in Domain/Port/{Service}Interface.php
 │     Step 2: Create adapter in Infrastructure/Service/{Service}Adapter.php
 │     Step 3: Configure binding in config/services.yaml
 │     Examples: EmailSender, FileStorage, PaymentGateway, CacheService, HttpClient
 │
 ├─ 1️⃣6️⃣ Framework Bridge (Filesystem, Mailer wrapper)?
-│  └─ 😎 Create manually - Concrete class (no interface)
+│  └─ 🎯 Create manually - Concrete class (no interface)
 │     Location: Infrastructure/Bridge/{Service}Handler.php
 │     Use: Simplify framework component usage
 │
 ├─ 1️⃣7️⃣ Event Subscriber (technical concerns)?
-│  └─ 😎 bin/console make:hexagonal:event-subscriber shared/logging Exception --layer=infrastructure
+│  └─ 🎯 bin/console make:hexagonal:event-subscriber shared/logging Exception --layer=infrastructure
 │
 ├─ 1️⃣8️⃣ Async Message Handler (background jobs, emails, workers)?
-│  └─ 😎 bin/console make:hexagonal:message-handler user/account SendWelcomeEmail [--with-message]
+│  └─ 🎯 bin/console make:hexagonal:message-handler user/account SendWelcomeEmail [--with-message]
 │     Generates: Infrastructure/Messaging/Handler/{Name}Handler.php
 │     Use for: Async emails, background jobs, queue processing
 │
@@ -676,7 +676,7 @@ What do you need to create?
 ├─────────────────────────────────────────────────────────────────
 │
 └─ 2️⃣0️⃣ Complete CRUD (all layers)?
-   └─ 😎 bin/console make:hexagonal:crud blog/post Post [--with-tests] [--with-id-vo]
+   └─ 🎯 bin/console make:hexagonal:crud blog/post Post [--with-tests] [--with-id-vo]
       Generates 20+ files: Entity + Repository + 5 UseCases + 5 Controllers + Form + Tests
 ```
 
@@ -691,19 +691,19 @@ What do you need to create?
 | **Domain Exception** | 🌪️ NO | Exception class |
 | **Domain Event** | 🌪️ NO | Immutable DTO |
 | **Domain Service** (pure logic) | 🌪️ NO | No external dependencies |
-| **Repository** | 😎 YES | Database can be swapped |
+| **Repository** | 🎯 YES | Database can be swapped |
 | **Command/Query Handler** | 🌪️ NO | Decoupled via Messenger |
 | **UseCase** | 🌪️ NO | Concrete orchestrator |
 | **Input DTO** | 🌪️ NO | Data structure |
 | **Controller** | 🌪️ NO | UI adapter |
 | **Form** | 🌪️ NO | UI component |
 | **CLI Command** | 🌪️ NO | UI adapter |
-| **EmailSender** | 😎 YES | Can swap SMTP/SendGrid/etc |
-| **FileStorage** | 😎 YES | Can swap Local/S3/Cloud |
-| **PaymentGateway** | 😎 YES | Can swap Stripe/PayPal/etc |
-| **Cache** | 😎 YES | Can swap Redis/Memcached/etc |
-| **HTTP Client** | 😎 YES | Can swap implementations |
-| **Notification** | 😎 YES | Can swap SMS/Push/Email |
+| **EmailSender** | 🎯 YES | Can swap SMTP/SendGrid/etc |
+| **FileStorage** | 🎯 YES | Can swap Local/S3/Cloud |
+| **PaymentGateway** | 🎯 YES | Can swap Stripe/PayPal/etc |
+| **Cache** | 🎯 YES | Can swap Redis/Memcached/etc |
+| **HTTP Client** | 🎯 YES | Can swap implementations |
+| **Notification** | 🎯 YES | Can swap SMS/Push/Email |
 | **Framework Bridge** | 🌪️ NO | Internal utility |
 | **Parser/Serializer** | 🌪️ NO (usually) | Internal utility |
 
@@ -712,9 +712,9 @@ What do you need to create?
 ### 🎯 Golden Rule for Interfaces
 
 **Create an interface (Port) if and ONLY if:**
-1. 😎 It's an **external dependency** (database, API, file, email, etc.)
-2. 😎 You want to **swap implementations** (MySQL → MongoDB, Local → S3)
-3. 😎 You want to **easily mock** in tests (in-memory repository)
+1. 🎯 It's an **external dependency** (database, API, file, email, etc.)
+2. 🎯 You want to **swap implementations** (MySQL → MongoDB, Local → S3)
+3. 🎯 You want to **easily mock** in tests (in-memory repository)
 
 **Otherwise, use a concrete class!**
 
