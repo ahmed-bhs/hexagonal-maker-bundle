@@ -17,24 +17,20 @@ use <?= $entity_namespace ?>\<?= $entity_name ?>;
 interface <?= $class_name ?>
 
 {
+    /**
+     * Persist an entity to the storage.
+     */
     public function save(<?= $entity_name ?> $<?= strtolower($entity_name) ?>): void;
 
-    public function findById(string $id): ?<?= $entity_name ?>;
-
-    public function delete(<?= $entity_name ?> $<?= strtolower($entity_name) ?>): void;
+    /**
+     * Find an entity by its identifier.
+     */
+    public function find(string $id): ?<?= $entity_name ?>;
 
     /**
+     * Retrieve all entities.
+     *
      * @return <?= $entity_name ?>[]
      */
     public function findAll(): array;
-<?php if (!empty($properties)): ?>
-<?php foreach ($properties as $prop): ?>
-<?php if ($prop['unique'] ?? false): ?>
-
-    public function findBy<?= ucfirst($prop['name']) ?>(<?= $prop['phpType'] ?> $<?= $prop['name'] ?>): ?<?= $entity_name ?>;
-
-    public function existsBy<?= ucfirst($prop['name']) ?>(<?= $prop['phpType'] ?> $<?= $prop['name'] ?>): bool;
-<?php endif; ?>
-<?php endforeach; ?>
-<?php endif; ?>
 }

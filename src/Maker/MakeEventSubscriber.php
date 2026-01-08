@@ -84,6 +84,10 @@ final class MakeEventSubscriber extends AbstractMaker
                 '  3. Handle framework-specific events',
             ]);
         }
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

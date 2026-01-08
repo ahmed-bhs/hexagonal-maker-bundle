@@ -63,6 +63,10 @@ final class MakeInput extends AbstractMaker
             'Next: Add your input properties with validation constraints',
             'Example: #[Assert\NotBlank] #[Assert\Email] public string $email;',
         ]);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

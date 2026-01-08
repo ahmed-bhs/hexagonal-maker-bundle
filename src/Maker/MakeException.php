@@ -63,6 +63,10 @@ final class MakeException extends AbstractMaker
             'Next: Add static factory methods for specific error cases',
             'Example: public static function emailInvalid(string $email): self',
         ]);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

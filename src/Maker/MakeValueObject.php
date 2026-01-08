@@ -59,6 +59,9 @@ final class MakeValueObject extends AbstractMaker
         $this->generator->generateValueObject($path, $name);
 
         $this->writeSuccessMessage($io);
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

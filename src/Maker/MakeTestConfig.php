@@ -68,6 +68,10 @@ final class MakeTestConfig extends AbstractMaker
             '  - .env.test',
             '  - config/packages/test/ (when@test configurations)',
         ]);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

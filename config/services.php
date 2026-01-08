@@ -9,10 +9,10 @@ return static function (ContainerConfigurator $configurator) {
         ->defaults()
             ->autowire()
             ->autoconfigure()
-            ->bind('string $projectDir', param('kernel.project_dir'))
             ->bind('string $skeletonDir', param('hexagonal_maker.skeleton_dir'))
             ->bind('string $rootNamespace', param('hexagonal_maker.root_namespace'))
             ->bind('string $rootDir', param('kernel.project_dir').'/'.param('hexagonal_maker.root_dir'))
+            ->bind('string $projectDir', param('kernel.project_dir'))
 
         ->load('AhmedBhs\\HexagonalMakerBundle\\', '../src/*')
             ->exclude('../src/{DependencyInjection,HexagonalMakerBundle.php}')

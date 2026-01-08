@@ -112,6 +112,10 @@ final class MakeMessageHandler extends AbstractMaker
             '        routing:',
             '            \'App\\Module\\' . ucfirst(str_replace('/', '\\', $path)) . '\\Application\\Message\\' . $name . 'Message\': async',
         ]);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

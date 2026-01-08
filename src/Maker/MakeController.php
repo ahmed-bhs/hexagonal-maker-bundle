@@ -23,14 +23,17 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use AhmedBhs\HexagonalMakerBundle\Generator\HexagonalGenerator;
+use AhmedBhs\HexagonalMakerBundle\Config\RoutesConfigUpdater;
 
 final class MakeController extends AbstractMaker
 {
     private HexagonalGenerator $generator;
+    private string $projectDir;
 
-    public function __construct(HexagonalGenerator $generator)
+    public function __construct(HexagonalGenerator $generator, string $projectDir)
     {
         $this->generator = $generator;
+        $this->projectDir = $projectDir;
     }
 
     public static function getCommandName(): string
@@ -66,6 +69,9 @@ final class MakeController extends AbstractMaker
 
         // Generate Controller
         $this->generator->generateController($path, $name, $route);
+
+        // Auto-configure routes
+        $this->autoConfigureRoutes($path, $io);
 
         // Generate complete workflow if requested
         if ($withWorkflow) {
@@ -112,6 +118,37 @@ final class MakeController extends AbstractMaker
         }
 
         $io->text($nextSteps);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
+    }
+
+    /**
+     * Auto-configure routes for hexagonal controllers
+     */
+    private function autoConfigureRoutes(string $path, ConsoleStyle $io): void
+    {
+        try {
+            // Parse path to get module info
+            $parts = array_map('ucfirst', explode('/', $path));
+            $moduleName = strtolower(implode('_', $parts));
+
+            $routesUpdater = new RoutesConfigUpdater($this->projectDir);
+
+            $config = [
+                'route_key' => $moduleName . '_controllers',
+                'path' => '../src/' . implode('/', $parts) . '/UI/Http/Web/Controller/',
+                'namespace' => 'App\\' . implode('\\', $parts) . '\\UI\\Http\\Web\\Controller',
+            ];
+
+            if ($routesUpdater->add($config)) {
+                $io->text('  <fg=green>✓</> Auto-configured routes in routes.yaml');
+            }
+        } catch (\Exception $e) {
+            $io->warning('Could not auto-configure routes: ' . $e->getMessage());
+            $io->text('  Please add the route configuration manually in config/routes.yaml');
+        }
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

@@ -16,8 +16,10 @@ namespace <?= $namespace ?>;
  * ⚠️ IMPORTANT: This entity is PURE - no framework dependencies.
  * Doctrine ORM mapping is configured separately in:
  * Infrastructure/Persistence/Doctrine/Orm/Mapping/<?= $class_name ?>.orm.yml
+ *
+ * Note: Not final to allow Doctrine lazy loading with ghost objects (ORM 3.x)
  */
-final class <?= $class_name ?>
+class <?= $class_name ?>
 
 {
     private string $id;
@@ -35,7 +37,7 @@ final class <?= $class_name ?>
     // private bool $isActive = true;
 <?php endif; ?>
 
-    public function __construct(
+    private function __construct(
         string $id,
 <?php if (!empty($properties)): ?>
 <?php foreach ($properties as $prop): ?>
@@ -67,6 +69,42 @@ final class <?= $class_name ?>
 <?php endif; ?>
     }
 
+<?php if (!empty($properties)): ?>
+    /**
+     * Factory method to create a new <?= $class_name ?> with auto-generated ID
+     */
+    public static function create(
+<?php foreach ($properties as $prop): ?>
+        <?= $prop['phpType'] ?> $<?= $prop['name'] ?>,
+<?php endforeach; ?>
+    ): self {
+        return new self(
+            \Symfony\Component\Uid\Uuid::v4()->toRfc4122(),
+<?php foreach ($properties as $prop): ?>
+            $<?= $prop['name'] ?>,
+<?php endforeach; ?>
+        );
+    }
+
+    /**
+     * Factory method to reconstitute <?= $class_name ?> from persistence
+     * Used by Doctrine to rebuild entities from database
+     */
+    public static function reconstitute(
+        string $id,
+<?php foreach ($properties as $prop): ?>
+        <?= $prop['phpType'] ?> $<?= $prop['name'] ?>,
+<?php endforeach; ?>
+    ): self {
+        return new self(
+            $id,
+<?php foreach ($properties as $prop): ?>
+            $<?= $prop['name'] ?>,
+<?php endforeach; ?>
+        );
+    }
+
+<?php endif; ?>
     public function getId(): string
     {
         return $this->id;

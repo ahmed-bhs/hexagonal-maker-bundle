@@ -65,6 +65,10 @@ final class MakeUseCaseTest extends AbstractMaker
             '  2. Add data providers for edge cases',
             '  3. Run tests: vendor/bin/phpunit',
         ]);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

@@ -97,6 +97,10 @@ final class MakeForm extends AbstractMaker
         }
 
         $io->text($nextSteps);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

@@ -25,7 +25,16 @@ class HexagonalMakerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('hexagonal_maker.skeleton_dir', $config['skeleton_dir']);
+        // Use bundle's skeleton dir as default, user can override
+        $bundleSkeletonDir = \dirname(__DIR__, 2).'/config/skeleton';
+        $skeletonDir = $config['skeleton_dir'];
+
+        // If user skeleton dir doesn't exist, use bundle's default
+        if (!is_dir($container->getParameterBag()->resolveValue($skeletonDir))) {
+            $skeletonDir = $bundleSkeletonDir;
+        }
+
+        $container->setParameter('hexagonal_maker.skeleton_dir', $skeletonDir);
         $container->setParameter('hexagonal_maker.root_dir', $config['root_dir']);
         $container->setParameter('hexagonal_maker.root_namespace', $config['root_namespace']);
 

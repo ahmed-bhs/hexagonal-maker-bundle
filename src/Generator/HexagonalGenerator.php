@@ -21,17 +21,41 @@ class HexagonalGenerator
     private string $skeletonDir;
     private string $rootNamespace;
     private string $rootDir;
+    private string $projectDir;
 
     public function __construct(
         Generator $generator,
         string $skeletonDir,
         string $rootNamespace,
-        string $rootDir
+        string $rootDir,
+        string $projectDir
     ) {
         $this->generator = $generator;
         $this->skeletonDir = $skeletonDir;
         $this->rootNamespace = $rootNamespace;
         $this->rootDir = $rootDir;
+        $this->projectDir = $projectDir;
+    }
+
+    /**
+     * Check if Doctrine ORM 3.x or higher is installed
+     */
+    private function isDoctrine3OrHigher(): bool
+    {
+        $composerPath = $this->projectDir . '/composer.json';
+
+        if (!file_exists($composerPath)) {
+            return false;
+        }
+
+        $composer = json_decode(file_get_contents($composerPath), true);
+        $ormVersion = $composer['require']['doctrine/orm'] ?? $composer['require-dev']['doctrine/orm'] ?? null;
+
+        if (!$ormVersion) {
+            return false;
+        }
+
+        return str_contains($ormVersion, '^3.') || str_contains($ormVersion, '^4.');
     }
 
     public function generateRepository(string $path, string $name, array $properties = []): void
@@ -139,12 +163,15 @@ class HexagonalGenerator
             ]
         );
 
-        // 2. Generate Doctrine ORM Mapping YAML (in Infrastructure)
+        // 2. Generate Doctrine ORM Mapping (XML for ORM 3.x, YAML for older versions)
+        $useXml = $this->isDoctrine3OrHigher();
+        $mappingExt = $useXml ? 'xml' : 'yml';
         $mappingFilePath = sprintf(
-            '%s/%s/Infrastructure/Persistence/Doctrine/Orm/Mapping/%s.orm.yml',
+            '%s/%s/Infrastructure/Persistence/Doctrine/Orm/Mapping/%s.orm.%s',
             $this->rootDir,
             $namespacePath->toPath(),
-            $name
+            $name,
+            $mappingExt
         );
 
         $repositoryFullClassName = sprintf(
@@ -161,9 +188,14 @@ class HexagonalGenerator
             $name
         );
 
+        // Choose template based on Doctrine ORM version
+        $templateFile = $useXml
+            ? '/src/Module/Infrastructure/Persistence/Doctrine/Orm/Mapping/Entity.orm.xml.tpl.php'
+            : '/src/Module/Infrastructure/Persistence/Doctrine/Orm/Mapping/Entity.orm.yml.tpl.php';
+
         $this->generator->generateFile(
             $mappingFilePath,
-            $this->skeletonDir.'/src/Module/Infrastructure/Persistence/Doctrine/Orm/Mapping/Entity.orm.yml.tpl.php',
+            $this->skeletonDir . $templateFile,
             [
                 'entity_full_class_name' => $entityFullClassName,
                 'repository_full_class_name' => $repositoryFullClassName,

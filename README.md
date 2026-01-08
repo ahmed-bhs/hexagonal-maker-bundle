@@ -98,6 +98,79 @@ bin/console make:hexagonal:form user/account User
 
 > **📚 [Read the complete guide: WHY-HEXAGONAL.md](WHY-HEXAGONAL.md)**
 
+### 2.1 What the Founders Say
+
+#### Alistair Cockburn - Creator of Hexagonal Architecture (2005)
+
+> *"Allow an application to equally be driven by users, programs, automated test or batch scripts, and to be developed and tested in isolation from its eventual run-time devices and databases."*
+>
+> — Alistair Cockburn, [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/)
+
+**On the core principle:**
+
+> *"The hexagon is intended to visually highlight the following:*
+> - *(a) There is an inside and an outside to the application*
+> - *(b) The number of ports is not two, but many (and variable)*
+> - *(c) The number of adapters for any particular port is not one, but many (and variable)*"*
+
+**On dependencies:**
+
+> *"Create your application to work without either a UI or a database so you can run automated regression-tests against the application, work when the database becomes unavailable, and link applications together without any user involvement."*
+
+#### Robert C. Martin (Uncle Bob) - Creator of Clean Architecture (2012)
+
+**On the business logic:**
+
+> *"The business rules are the heart of the software. They carry the code that makes, or saves, money. They are the family jewels. We want to protect them from all forms of complexity and change."*
+>
+> — Robert C. Martin, [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
+**On frameworks:**
+
+> *"Frameworks are tools to be used, not architectures to be conformed to. If your architecture is based on frameworks, then it cannot be based on your use cases."*
+
+**On the dependency rule:**
+
+> *"Source code dependencies must point only inward, toward higher-level policies. Nothing in an inner circle can know anything at all about something in an outer circle."*
+
+**On volatility:**
+
+> *"The less volatile things are, the more they should be depended upon. Business rules change less frequently than technical details, so technical details should depend on business rules, not the other way around."*
+
+#### Eric Evans - Domain-Driven Design (2003)
+
+**On isolating the domain:**
+
+> *"The heart of software is its ability to solve domain-related problems for its user. All other features, vital though they may be, support this basic purpose."*
+>
+> — Eric Evans, [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.domainlanguage.com/ddd/)
+
+**On the domain model:**
+
+> *"When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as a standalone interface declared as a SERVICE."*
+
+#### Jeffrey Palermo - Onion Architecture (2008)
+
+**On dependency direction:**
+
+> *"The fundamental rule is that all code can depend on layers more central, but code cannot depend on layers further out from the core. In other words, all coupling is toward the center."*
+>
+> — Jeffrey Palermo, [The Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)
+
+**On persistence ignorance:**
+
+> *"The application core doesn't know anything about how data is persisted or where data comes from. It defines interfaces for these concerns, and the outer layers implement these interfaces."*
+
+### 2.2 Key Principles from the Masters
+
+| Principle | Author | Meaning |
+|-----------|--------|---------|
+| **Dependency Inversion** | Uncle Bob | High-level modules should not depend on low-level modules. Both should depend on abstractions. |
+| **Ports & Adapters** | Alistair Cockburn | The core defines ports (interfaces), the outside world provides adapters (implementations). |
+| **Screaming Architecture** | Uncle Bob | Your architecture should scream what the application does, not what framework it uses. |
+| **Ubiquitous Language** | Eric Evans | The code should speak the language of the domain experts, not technical jargon. |
+| **Isolation** | All | Business logic must be isolated from technical concerns (UI, DB, frameworks). |
+
 ### Quick Summary
 
 **Everything is coupled anyway, so why bother?**

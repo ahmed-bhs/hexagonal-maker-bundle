@@ -67,6 +67,10 @@ final class MakeControllerTest extends AbstractMaker
             '  2. Add form submission tests',
             '  3. Run tests: vendor/bin/phpunit',
         ]);
+
+
+        // Write all changes to disk
+        $generator->writeChanges();
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

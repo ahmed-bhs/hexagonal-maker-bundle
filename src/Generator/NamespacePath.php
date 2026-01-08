@@ -56,4 +56,13 @@ final class NamespacePath
 
         return substr($this->relativePath, $position + 1);
     }
+
+    /**
+     * Convert namespace path to file system path
+     * Example: "Cadeau/Attribution" => "Cadeau/Attribution"
+     */
+    public function toPath(): string
+    {
+        return $this->relativePath;
+    }
 }

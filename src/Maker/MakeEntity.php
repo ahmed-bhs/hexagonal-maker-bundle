@@ -27,14 +27,18 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use AhmedBhs\HexagonalMakerBundle\Generator\HexagonalGenerator;
 use AhmedBhs\HexagonalMakerBundle\Generator\PropertyConfig;
+use AhmedBhs\HexagonalMakerBundle\Config\DoctrineConfigUpdater;
+use AhmedBhs\HexagonalMakerBundle\Config\ServicesConfigUpdater;
 
 final class MakeEntity extends AbstractMaker
 {
     private HexagonalGenerator $generator;
+    private string $projectDir;
 
-    public function __construct(HexagonalGenerator $generator)
+    public function __construct(HexagonalGenerator $generator, string $projectDir)
     {
         $this->generator = $generator;
+        $this->projectDir = $projectDir;
     }
 
     public static function getCommandName(): string
@@ -74,7 +78,13 @@ final class MakeEntity extends AbstractMaker
         // Generate Entity with properties
         $this->generator->generateEntity($path, $name, $properties);
 
-        $generatedFiles = ['  - Entity: ' . $name . '.php', '  - Doctrine Mapping: ' . $name . '.orm.yml'];
+        // Detect mapping file extension
+        $mappingExt = $this->isDoctrine3OrHigher() ? 'xml' : 'yml';
+        $generatedFiles = ['  - Entity: ' . $name . '.php', '  - Doctrine Mapping: ' . $name . '.orm.' . $mappingExt];
+
+        // Auto-configure Doctrine and Services
+        $this->autoConfigureDoctrine($path, $io);
+        $this->autoConfigureServices($io);
 
         // Generate Repository if requested
         if ($withRepository) {
@@ -275,5 +285,77 @@ final class MakeEntity extends AbstractMaker
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
         // no-op
+    }
+
+    /**
+     * Auto-configure Doctrine mapping for the module
+     */
+    private function autoConfigureDoctrine(string $path, ConsoleStyle $io): void
+    {
+        try {
+            // Parse path to get module info
+            // Example: "cadeau/attribution" => ["Cadeau", "Attribution"]
+            $parts = array_map('ucfirst', explode('/', $path));
+            $moduleName = implode('', $parts);
+
+            $doctrineUpdater = new DoctrineConfigUpdater($this->projectDir);
+
+            // Check Doctrine ORM version to determine mapping type
+            $useXml = $this->isDoctrine3OrHigher();
+            $mappingType = $useXml ? 'xml' : 'yml';
+
+            $config = [
+                'mapping_name' => $moduleName,
+                'type' => $mappingType,
+                'dir' => '%kernel.project_dir%/src/' . implode('/', $parts) . '/Infrastructure/Persistence/Doctrine/Orm/Mapping',
+                'prefix' => 'App\\' . implode('\\', $parts) . '\\Domain\\Model',
+                'alias' => $moduleName,
+            ];
+
+            if ($doctrineUpdater->add($config)) {
+                $io->text('  <fg=green>✓</> Auto-configured Doctrine mapping in doctrine.yaml');
+            }
+        } catch (\Exception $e) {
+            $io->warning('Could not auto-configure Doctrine: ' . $e->getMessage());
+            $io->text('  Please add the mapping manually in config/packages/doctrine.yaml');
+        }
+    }
+
+    /**
+     * Auto-configure Services (Domain exclusions)
+     */
+    private function autoConfigureServices(ConsoleStyle $io): void
+    {
+        try {
+            $servicesUpdater = new ServicesConfigUpdater($this->projectDir);
+
+            if ($servicesUpdater->addDomainExclusions()) {
+                $io->text('  <fg=green>✓</> Auto-configured Domain exclusions in services.yaml');
+            }
+        } catch (\Exception $e) {
+            $io->warning('Could not auto-configure Services: ' . $e->getMessage());
+            $io->text('  Please exclude Domain/Model and Domain/ValueObject manually');
+        }
+    }
+
+    /**
+     * Check if Doctrine ORM 3.x or higher is installed
+     */
+    private function isDoctrine3OrHigher(): bool
+    {
+        $composerPath = $this->projectDir . '/composer.json';
+
+        if (!file_exists($composerPath)) {
+            return false;
+        }
+
+        $composer = json_decode(file_get_contents($composerPath), true);
+        $ormVersion = $composer['require']['doctrine/orm'] ?? $composer['require-dev']['doctrine/orm'] ?? null;
+
+        if (!$ormVersion) {
+            return false;
+        }
+
+        return str_contains($ormVersion, '^3.') || str_contains($ormVersion, '^4.');
     }
 }
