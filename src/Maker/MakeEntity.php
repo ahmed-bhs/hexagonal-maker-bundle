@@ -79,7 +79,7 @@ final class MakeEntity extends AbstractMaker
         // Generate Repository if requested
         if ($withRepository) {
             $io->text('Also generating Repository...');
-            $this->generator->generateRepository($path, $name);
+            $this->generator->generateRepository($path, $name, $properties);
             $generatedFiles[] = '  - Repository Port: ' . $name . 'RepositoryInterface.php';
             $generatedFiles[] = '  - Doctrine Adapter: Doctrine' . $name . 'Repository.php';
         }

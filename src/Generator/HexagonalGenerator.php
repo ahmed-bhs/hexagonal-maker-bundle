@@ -34,9 +34,12 @@ class HexagonalGenerator
         $this->rootDir = $rootDir;
     }
 
-    public function generateRepository(string $path, string $name): void
+    public function generateRepository(string $path, string $name, array $properties = []): void
     {
         $namespacePath = new NamespacePath($path, '');
+
+        // Convert PropertyConfig objects to arrays for template
+        $propertyData = array_map(fn($prop) => $prop->toArray(), $properties);
 
         // Generate Port (interface in Domain)
         $portNamespace = sprintf(
@@ -66,6 +69,7 @@ class HexagonalGenerator
                 'class_name' => $name.'RepositoryInterface',
                 'entity_name' => $name,
                 'entity_namespace' => $entityNamespace,
+                'properties' => $propertyData,
             ]
         );
 
@@ -99,6 +103,7 @@ class HexagonalGenerator
                 'entity_namespace' => $entityNamespace,
                 'port_namespace' => $portNamespace,
                 'port_class' => $name.'RepositoryInterface',
+                'properties' => $propertyData,
             ]
         );
     }

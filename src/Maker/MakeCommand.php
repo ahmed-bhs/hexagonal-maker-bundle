@@ -56,6 +56,8 @@ final class MakeCommand extends AbstractMaker
             ->addOption('with-tests', null, InputOption::VALUE_NONE, 'Generate unit and integration tests')
             ->addOption('properties', null, InputOption::VALUE_REQUIRED, 'Comma-separated properties (e.g. <fg=yellow>habitantId:string,cadeauId:string</>)')
             ->addOption('no-interaction', 'n', InputOption::VALUE_NONE, 'Skip interactive property prompts')
+            ->addOption('pattern', null, InputOption::VALUE_REQUIRED, 'Command pattern: create, update, delete (auto-detected if not provided)')
+            ->addOption('entity', null, InputOption::VALUE_REQUIRED, 'Entity name for auto-generation (e.g. <fg=yellow>Habitant</>)')
             //->setHelp(file_get_contents(__DIR__.'/../help/MakeCommand.txt'))
         ;
     }
@@ -68,11 +70,26 @@ final class MakeCommand extends AbstractMaker
         $factory = $input->getOption('factory');
         $withTests = $input->getOption('with-tests');
         $noInteraction = $input->getOption('no-interaction');
+        $entity = $input->getOption('entity');
 
         // Parse properties from option or ask interactively
         $properties = $this->getProperties($input, $io, $noInteraction);
 
-        $this->commandGenerator->generateCommand($path, $name, $factory, $withTests, $properties);
+        // Auto-detect or use provided pattern
+        $pattern = $input->getOption('pattern');
+        if (!$pattern) {
+            $pattern = $this->detectPattern($name);
+        }
+
+        // Generate metadata for handler
+        $metadata = [];
+        if ($pattern && $entity) {
+            $metadata['pattern'] = $pattern;
+            $metadata['entityName'] = $entity;
+            $io->text(sprintf('Detected pattern: <fg=green>%s</> for entity: <fg=green>%s</>', $pattern, $entity));
+        }
+
+        $this->commandGenerator->generateCommand($path, $name, $factory, $withTests, $properties, $metadata);
 
         $this->writeSuccessMessage($io);
 
@@ -89,6 +106,25 @@ final class MakeCommand extends AbstractMaker
 
         // Write all changes to disk
         $generator->writeChanges();
+    }
+
+    private function detectPattern(string $commandName): ?string
+    {
+        $lower = strtolower($commandName);
+
+        if (str_starts_with($lower, 'create') || str_starts_with($lower, 'creer')) {
+            return 'create';
+        }
+
+        if (str_starts_with($lower, 'update') || str_starts_with($lower, 'modifier') || str_starts_with($lower, 'mettre')) {
+            return 'update';
+        }
+
+        if (str_starts_with($lower, 'delete') || str_starts_with($lower, 'supprimer') || str_starts_with($lower, 'remove')) {
+            return 'delete';
+        }
+
+        return null;
     }
 
     /**

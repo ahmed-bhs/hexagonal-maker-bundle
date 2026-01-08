@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace <?= $namespace; ?>;
 
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+<?php if (!empty($repositories)): ?>
+<?php foreach ($repositories as $repo): ?>
+use <?= $repo['namespace'] ?>;
+<?php endforeach; ?>
+<?php endif; ?>
 
 /**
  * Query Handler
@@ -17,7 +22,13 @@ final readonly class <?= $class_name; ?>
 
 {
     public function __construct(
+<?php if (!empty($repositories)): ?>
+<?php foreach ($repositories as $repo): ?>
+        private <?= $repo['interface'] ?> $<?= $repo['variable'] ?>,
+<?php endforeach; ?>
+<?php else: ?>
         // Inject your dependencies here (repositories, services, etc.)
+<?php endif; ?>
     ) {
     }
 
