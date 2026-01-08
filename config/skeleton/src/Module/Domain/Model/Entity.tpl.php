@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace <?= $namespace ?>;
 
 /**
- * Domain Entity
+ * Domain Entity.
  *
  * Represents a domain concept with identity and lifecycle.
  * Contains business logic and enforces invariants.
@@ -21,6 +21,11 @@ final class <?= $class_name ?>
 
 {
     private string $id;
+<?php if (!empty($properties)): ?>
+<?php foreach ($properties as $prop): ?>
+    private <?= $prop['phpType'] ?> $<?= $prop['name'] ?>;
+<?php endforeach; ?>
+<?php else: ?>
 
     // TODO: Add your domain properties here
     // Example:
@@ -28,22 +33,59 @@ final class <?= $class_name ?>
     // private string $email;
     // private \DateTimeImmutable $createdAt;
     // private bool $isActive = true;
+<?php endif; ?>
 
     public function __construct(
         string $id,
+<?php if (!empty($properties)): ?>
+<?php foreach ($properties as $prop): ?>
+        <?= $prop['phpType'] ?> $<?= $prop['name'] ?>,
+<?php endforeach; ?>
+<?php else: ?>
         // TODO: Add your domain properties here
+<?php endif; ?>
     ) {
         $this->id = $id;
+<?php if (!empty($properties)): ?>
+
+        // Domain validation
+<?php foreach ($properties as $prop): ?>
+<?php if (!empty($prop['validationCode'])): ?>
+        <?= $prop['validationCode'] ?>
+
+<?php endif; ?>
+<?php endforeach; ?>
+        // Initialize properties
+<?php foreach ($properties as $prop): ?>
+        $this-><?= $prop['name'] ?> = <?php if ($prop['type'] === 'string' || $prop['type'] === 'email' || $prop['type'] === 'text'): ?>trim($<?= $prop['name'] ?>)<?php else: ?>$<?= $prop['name'] ?><?php endif; ?>;
+<?php endforeach; ?>
+<?php else: ?>
         // TODO: Initialize and validate your domain properties
         // Example:
         // $this->createdAt = new \DateTimeImmutable();
         // $this->isActive = true;
+<?php endif; ?>
     }
 
     public function getId(): string
     {
         return $this->id;
     }
+<?php if (!empty($properties)): ?>
+
+    // Getters
+<?php foreach ($properties as $prop): ?>
+
+    public function get<?= ucfirst($prop['name']) ?>(): <?= $prop['phpType'] ?>
+
+    {
+        return $this-><?= $prop['name'] ?>;
+    }
+<?php endforeach; ?>
+
+    // Business logic methods
+    // Add your domain-specific methods here
+<?php else: ?>
 
     // TODO: Add your business logic methods here
     // Example:
@@ -64,4 +106,5 @@ final class <?= $class_name ?>
     //     }
     //     $this->name = $name;
     // }
+<?php endif; ?>
 }

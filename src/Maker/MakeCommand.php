@@ -22,7 +22,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use AhmedBhs\HexagonalMakerBundle\Generator\CQGenerator;
+use AhmedBhs\HexagonalMakerBundle\Generator\PropertyConfig;
 
 final class MakeCommand extends AbstractMaker
 {
@@ -50,6 +54,8 @@ final class MakeCommand extends AbstractMaker
             ->addArgument('name', InputArgument::REQUIRED, 'The Command name (e.g. <fg=yellow>publish</>)')
             ->addOption('factory', null, InputOption::VALUE_NONE, 'Generate with factory')
             ->addOption('with-tests', null, InputOption::VALUE_NONE, 'Generate unit and integration tests')
+            ->addOption('properties', null, InputOption::VALUE_REQUIRED, 'Comma-separated properties (e.g. <fg=yellow>habitantId:string,cadeauId:string</>)')
+            ->addOption('no-interaction', 'n', InputOption::VALUE_NONE, 'Skip interactive property prompts')
             //->setHelp(file_get_contents(__DIR__.'/../help/MakeCommand.txt'))
         ;
     }
@@ -61,14 +67,131 @@ final class MakeCommand extends AbstractMaker
         $name = $input->getArgument('name');
         $factory = $input->getOption('factory');
         $withTests = $input->getOption('with-tests');
+        $noInteraction = $input->getOption('no-interaction');
 
-        $this->commandGenerator->generateCommand($path, $name, $factory, $withTests);
+        // Parse properties from option or ask interactively
+        $properties = $this->getProperties($input, $io, $noInteraction);
+
+        $this->commandGenerator->generateCommand($path, $name, $factory, $withTests, $properties);
 
         $this->writeSuccessMessage($io);
 
         if ($withTests) {
             $io->success('Command, Handler and Tests generated successfully!');
         }
+
+        if (!empty($properties)) {
+            $io->text([
+                'Generated with ' . count($properties) . ' properties',
+                'Next: Implement the business logic in the CommandHandler',
+            ]);
+        }
+
+        // Write all changes to disk
+        $generator->writeChanges();
+    }
+
+    /**
+     * @return PropertyConfig[]
+     */
+    private function getProperties(InputInterface $input, ConsoleStyle $io, bool $noInteraction): array
+    {
+        $properties = [];
+
+        // Parse from --properties option
+        if ($propertiesOption = $input->getOption('properties')) {
+            $propertyStrings = $this->splitProperties($propertiesOption);
+            foreach ($propertyStrings as $propertyString) {
+                $properties[] = PropertyConfig::fromString(trim($propertyString));
+            }
+            return $properties;
+        }
+
+        // Skip if no-interaction
+        if ($noInteraction) {
+            return [];
+        }
+
+        // Interactive mode
+        $io->section('Command Properties Configuration');
+        $io->text([
+            'Add properties to your command (press Enter with empty name to finish)',
+            'Commands are DTOs that carry data for write operations.',
+            '',
+        ]);
+
+        $helper = $io->getQuestionHelper();
+        $propertyCount = 0;
+
+        while (true) {
+            $io->newLine();
+            $propertyCount++;
+
+            // Ask for property name
+            $nameQuestion = new Question(sprintf('  Property name (or press Enter to finish) [<fg=yellow>%d</>]: ', $propertyCount), '');
+            $propertyName = $helper->ask($input, $io->getOutput(), $nameQuestion);
+
+            if (empty($propertyName)) {
+                break;
+            }
+
+            // Ask for type (simpler for commands - mostly string, int, bool)
+            $typeQuestion = new ChoiceQuestion(
+                '  Property type:',
+                ['string', 'int', 'bool', 'float', 'array'],
+                'string'
+            );
+            $propertyType = $helper->ask($input, $io->getOutput(), $typeQuestion);
+
+            $properties[] = new PropertyConfig(
+                name: $propertyName,
+                type: $propertyType
+            );
+
+            $io->text('  <fg=green>✓</> Property "' . $propertyName . '" added');
+        }
+
+        if (!empty($properties)) {
+            $io->newLine();
+            $io->success(count($properties) . ' properties configured!');
+        }
+
+        return $properties;
+    }
+
+    /**
+     * Split properties string by comma, but respect parentheses
+     */
+    private function splitProperties(string $propertiesString): array
+    {
+        $properties = [];
+        $current = '';
+        $depth = 0;
+
+        for ($i = 0; $i < strlen($propertiesString); $i++) {
+            $char = $propertiesString[$i];
+
+            if ($char === '(') {
+                $depth++;
+                $current .= $char;
+            } elseif ($char === ')') {
+                $depth--;
+                $current .= $char;
+            } elseif ($char === ',' && $depth === 0) {
+                if ($current !== '') {
+                    $properties[] = trim($current);
+                }
+                $current = '';
+            } else {
+                $current .= $char;
+            }
+        }
+
+        if ($current !== '') {
+            $properties[] = trim($current);
+        }
+
+        return $properties;
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void

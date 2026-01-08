@@ -12,6 +12,27 @@
             # For ULID, use: type: ulid
 
     fields:
+<?php if (!empty($properties)): ?>
+<?php foreach ($properties as $prop): ?>
+        <?= $prop['name'] ?>:
+            type: <?= $prop['doctrineType'] ?>
+
+<?php if ($prop['doctrineType'] === 'string'): ?>
+            length: <?= $prop['maxLength'] ?? 255 ?>
+
+<?php endif; ?>
+<?php if ($prop['nullable']): ?>
+            nullable: true
+<?php endif; ?>
+<?php if ($prop['unique']): ?>
+            unique: true
+<?php endif; ?>
+<?php if (in_array($prop['doctrineType'], ['decimal', 'float'])): ?>
+            precision: 10
+            scale: 2
+<?php endif; ?>
+<?php endforeach; ?>
+<?php else: ?>
         # TODO: Add your entity fields mapping here
         # Example:
         # name:
@@ -27,6 +48,7 @@
         # isActive:
         #     type: boolean
         #     column: is_active
+<?php endif; ?>
 
     # Uncomment for lifecycle callbacks
     # lifecycleCallbacks: {  }

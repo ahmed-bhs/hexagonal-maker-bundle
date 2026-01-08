@@ -30,18 +30,18 @@ class CQGenerator
         $this->rootNamespace = $rootNamespace;
     }
 
-    public function generateCommand(string $namespacePath, string $name, bool $withFactory): void
+    public function generateCommand(string $namespacePath, string $name, bool $withFactory, bool $withTests = false, array $properties = []): void
     {
         $path = new NamespacePath($namespacePath, $this->rootNamespace);
         $name = NamespacePath::normalize($name);
 
-        $this->generateApplicationCommand($path, $name);
+        $this->generateApplicationCommand($path, $name, $properties);
 
         if ($withFactory) {
-            $this->generateApplicationCommandHandlerWithFactory($path, $name);
+            $this->generateApplicationCommandHandlerWithFactory($path, $name, $properties);
             $this->generateApplicationFactory($path, $name);
         } else {
-            $this->generateApplicationCommandHandler($path, $name);
+            $this->generateApplicationCommandHandler($path, $name, $properties);
         }
 
         $this->generator->writeChanges();
@@ -59,9 +59,12 @@ class CQGenerator
         $this->generator->writeChanges();
     }
 
-    private function generateApplicationCommand(NamespacePath $path, string $name): void
+    private function generateApplicationCommand(NamespacePath $path, string $name, array $properties = []): void
     {
         $className = $name.'Command';
+
+        // Convert PropertyConfig objects to arrays for template
+        $propertyData = array_map(fn($prop) => $prop->toArray(), $properties);
 
         $this->generator->generateFile(
             $this->rootDir.'/'.$path->normalizedValue().'/Application/'.$name.'/'.$className.'.php',
@@ -72,13 +75,17 @@ class CQGenerator
                 'class_name' => $className,
                 'command_type' => $className,
                 'command_name' => strtolower($className),
+                'properties' => $propertyData,
             ]
         );
     }
 
-    private function generateApplicationCommandHandler(NamespacePath $path, string $name): void
+    private function generateApplicationCommandHandler(NamespacePath $path, string $name, array $properties = []): void
     {
         $className = $name.'CommandHandler';
+
+        // Convert PropertyConfig objects to arrays for template
+        $propertyData = array_map(fn($prop) => $prop->toArray(), $properties);
 
         $this->generator->generateFile(
             $this->rootDir.'/'.$path->normalizedValue().'/Application/'.$name.'/'.$className.'.php',
@@ -89,6 +96,7 @@ class CQGenerator
                 'class_name' => $className,
                 'command_type' => $name,
                 'command_name' => strtolower($name),
+                'properties' => $propertyData,
             ]
         );
     }

@@ -36,7 +36,7 @@ class HexagonalGenerator
 
     public function generateRepository(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Generate Port (interface in Domain)
         $portNamespace = sprintf(
@@ -52,6 +52,12 @@ class HexagonalGenerator
             $name
         );
 
+        $entityNamespace = sprintf(
+            '%s\\%s\\Domain\\Model',
+            $this->rootNamespace,
+            $namespacePath->toNamespace()
+        );
+
         $this->generator->generateFile(
             $portPath,
             $this->skeletonDir.'/src/Module/Domain/Port/RepositoryInterface.tpl.php',
@@ -59,6 +65,7 @@ class HexagonalGenerator
                 'namespace' => $portNamespace,
                 'class_name' => $name.'RepositoryInterface',
                 'entity_name' => $name,
+                'entity_namespace' => $entityNamespace,
             ]
         );
 
@@ -76,6 +83,12 @@ class HexagonalGenerator
             $name
         );
 
+        $entityNamespace = sprintf(
+            '%s\\%s\\Domain\\Model',
+            $this->rootNamespace,
+            $namespacePath->toNamespace()
+        );
+
         $this->generator->generateFile(
             $adapterPath,
             $this->skeletonDir.'/src/Module/Infrastructure/Persistence/Doctrine/DoctrineRepository.tpl.php',
@@ -83,15 +96,16 @@ class HexagonalGenerator
                 'namespace' => $adapterNamespace,
                 'class_name' => 'Doctrine'.$name.'Repository',
                 'entity_name' => $name,
+                'entity_namespace' => $entityNamespace,
                 'port_namespace' => $portNamespace,
                 'port_class' => $name.'RepositoryInterface',
             ]
         );
     }
 
-    public function generateEntity(string $path, string $name): void
+    public function generateEntity(string $path, string $name, array $properties = []): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // 1. Generate Domain Entity (PURE - no Doctrine)
         $domainNamespace = sprintf(
@@ -107,12 +121,16 @@ class HexagonalGenerator
             $name
         );
 
+        // Convert PropertyConfig objects to arrays for template
+        $propertyData = array_map(fn($prop) => $prop->toArray(), $properties);
+
         $this->generator->generateFile(
             $entityFilePath,
             $this->skeletonDir.'/src/Module/Domain/Model/Entity.tpl.php',
             [
                 'namespace' => $domainNamespace,
                 'class_name' => $name,
+                'properties' => $propertyData,
             ]
         );
 
@@ -145,13 +163,14 @@ class HexagonalGenerator
                 'entity_full_class_name' => $entityFullClassName,
                 'repository_full_class_name' => $repositoryFullClassName,
                 'entity_name' => $name,
+                'properties' => $propertyData,
             ]
         );
     }
 
     public function generateValueObject(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         $namespace = sprintf(
             '%s\\%s\\Domain\\ValueObject',
@@ -178,7 +197,7 @@ class HexagonalGenerator
 
     public function generateException(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         $namespace = sprintf(
             '%s\\%s\\Domain\\Exception',
@@ -205,7 +224,7 @@ class HexagonalGenerator
 
     public function generateInput(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         $namespace = sprintf(
             '%s\\%s\\Application\\Input',
@@ -232,7 +251,7 @@ class HexagonalGenerator
 
     public function generateUseCase(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Extract entity name from use case name (e.g., CreateUser -> User)
         $entityName = preg_replace('/^(Create|Update|Delete|Find|Get|List|Search)/', '', $name);
@@ -287,7 +306,7 @@ class HexagonalGenerator
 
     public function generateController(string $path, string $name, string $route): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Extract entity name (e.g., CreateUser -> User)
         $entityName = preg_replace('/^(Create|Update|Delete|Show|List|Search)/', '', $name);
@@ -356,7 +375,7 @@ class HexagonalGenerator
 
     public function generateForm(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         $namespace = sprintf(
             '%s\\%s\\UI\\Http\\Web\\Form',
@@ -387,7 +406,7 @@ class HexagonalGenerator
 
     public function generateCliCommand(string $path, string $name, string $commandName): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         $namespace = sprintf(
             '%s\\%s\\UI\\Cli',
@@ -440,7 +459,7 @@ class HexagonalGenerator
 
     public function generateUseCaseTest(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Extract entity name from use case name
         $entityName = preg_replace('/^(Create|Update|Delete|Find|Get|List|Search)/', '', $name);
@@ -517,7 +536,7 @@ class HexagonalGenerator
 
     public function generateControllerTest(string $path, string $name, string $route): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Extract entity name
         $entityName = preg_replace('/^(Create|Update|Delete|Show|List|Search)/', '', $name);
@@ -567,7 +586,7 @@ class HexagonalGenerator
 
     public function generateCliCommandTest(string $path, string $name, string $commandName): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Extract entity name
         $entityName = preg_replace('/^(Create|Update|Delete|Find|Get|List|Search)/', '', $name);
@@ -607,7 +626,7 @@ class HexagonalGenerator
 
     public function generateDomainEvent(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         $namespace = sprintf(
             '%s\\%s\\Domain\\Event',
@@ -634,7 +653,7 @@ class HexagonalGenerator
 
     public function generateEventSubscriber(string $path, string $name, string $layer): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         if ($layer === 'application') {
             $namespace = sprintf(
@@ -695,7 +714,7 @@ class HexagonalGenerator
 
     public function generateMessageHandler(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Message Handler in Infrastructure/Messaging/Handler
         $namespace = sprintf(
@@ -732,7 +751,7 @@ class HexagonalGenerator
 
     public function generateMessage(string $path, string $name): void
     {
-        $namespacePath = new NamespacePath($path);
+        $namespacePath = new NamespacePath($path, '');
 
         // Message in Application/Message
         $namespace = sprintf(
