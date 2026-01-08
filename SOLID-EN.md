@@ -1,23 +1,23 @@
-# Architecture Hexagonale & Principes SOLID
+# Hexagonal Architecture & SOLID Principles
 
-Ce document explique en détail comment l'architecture hexagonale respecte les principes SOLID, ses avantages par rapport à une architecture en couches traditionnelle, et les risques d'une mauvaise architecture.
+This document explains in detail how hexagonal architecture respects SOLID principles, its advantages over traditional layered architecture, and the risks of poor architecture.
 
-## Table des matières
+## Table of Contents
 
-1. [Les Principes SOLID](#les-principes-solid)
-2. [Architecture Hexagonale vs Architecture en Couches](#architecture-hexagonale-vs-architecture-en-couches)
-3. [Comment l'Hexagonal Respecte SOLID](#comment-lhexagonal-respecte-solid)
-4. [Les Risques d'une Mauvaise Architecture](#les-risques-dune-mauvaise-architecture)
-5. [Cas Concrets et Exemples](#cas-concrets-et-exemples)
+1. [SOLID Principles](#solid-principles)
+2. [Hexagonal Architecture vs Layered Architecture](#hexagonal-architecture-vs-layered-architecture)
+3. [How Hexagonal Respects SOLID](#how-hexagonal-respects-solid)
+4. [Risks of Poor Architecture](#risks-of-poor-architecture)
+5. [Concrete Cases and Examples](#concrete-cases-and-examples)
 
 ---
 
-## 1. Les Principes SOLID
+## 1. SOLID Principles
 
 ### 1.1 Single Responsibility Principle (SRP)
-**"Une classe ne devrait avoir qu'une seule raison de changer"**
+**"A class should have only one reason to change"**
 
-#### Violation (Architecture traditionnelle)
+#### Violation (Traditional architecture)
 ```php
 class UserController
 {
@@ -28,16 +28,16 @@ class UserController
             throw new Exception('Invalid email');
         }
 
-        // 2. Logique métier
+        // 2. Business logic
         $user = new User();
         $user->setEmail($request->get('email'));
         $user->setPassword(password_hash($request->get('password'), PASSWORD_BCRYPT));
 
-        // 3. Persistance
+        // 3. Persistence
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        // 4. Envoi email
+        // 4. Send email
         $this->mailer->send(new WelcomeEmail($user));
 
         return new JsonResponse(['status' => 'ok']);
@@ -45,16 +45,16 @@ class UserController
 }
 ```
 
-**Problèmes:**
-- Le contrôleur a **4 responsabilités** différentes
-- Si la validation change → modification du contrôleur
-- Si la base de données change → modification du contrôleur
-- Si l'email change → modification du contrôleur
-- **Impossible à tester** unitairement
+**Problems:**
+- The controller has **4 different responsibilities**
+- If validation changes → controller modification
+- If database changes → controller modification
+- If email changes → controller modification
+- **Impossible to unit test**
 
-#### Avec Architecture Hexagonale
+#### With Hexagonal Architecture
 ```php
-// Controller (UI Layer) - Responsabilité: Traduire HTTP en Command
+// Controller (UI Layer) - Responsibility: Translate HTTP to Command
 class UserController
 {
     public function register(Request $request): Response
@@ -70,7 +70,7 @@ class UserController
     }
 }
 
-// Command Handler (Application Layer) - Responsabilité: Orchestrer
+// Command Handler (Application Layer) - Responsibility: Orchestrate
 #[AsMessageHandler]
 class RegisterCommandHandler
 {
@@ -82,16 +82,16 @@ class RegisterCommandHandler
     }
 }
 
-// Entity (Domain Layer) - Responsabilité: Logique métier
+// Entity (Domain Layer) - Responsibility: Business logic
 class User
 {
     public function __construct(
-        private Email $email,    // Value Object avec validation
+        private Email $email,    // Value Object with validation
         private HashedPassword $password
     ) {}
 }
 
-// Repository Adapter (Infrastructure) - Responsabilité: Persistance
+// Repository Adapter (Infrastructure) - Responsibility: Persistence
 class DoctrineUserRepository implements UserRepositoryInterface
 {
     public function save(User $user): void
@@ -102,15 +102,15 @@ class DoctrineUserRepository implements UserRepositoryInterface
 }
 ```
 
-**Avantages:**
-- Chaque classe a **UNE SEULE** responsabilité
-- Facile à tester indépendamment
-- Changement isolé à un seul endroit
+**Benefits:**
+- Each class has **ONE SINGLE** responsibility
+- Easy to test independently
+- Change isolated to a single place
 
 ---
 
 ### 1.2 Open/Closed Principle (OCP)
-**"Ouvert à l'extension, fermé à la modification"**
+**"Open for extension, closed for modification"**
 
 #### Violation
 ```php
@@ -119,25 +119,25 @@ class NotificationService
     public function send(User $user, string $type): void
     {
         if ($type === 'email') {
-            // Logique email
+            // Email logic
             $this->mailer->send(...);
         } elseif ($type === 'sms') {
-            // Logique SMS
+            // SMS logic
             $this->smsClient->send(...);
         } elseif ($type === 'push') {
-            // Logique Push
+            // Push logic
             $this->pushService->send(...);
         }
-        // Si on ajoute Slack, il faut MODIFIER cette classe !
+        // If we add Slack, we must MODIFY this class!
     }
 }
 ```
 
-**Problème:** Pour ajouter un nouveau canal, on doit **modifier** le code existant.
+**Problem:** To add a new channel, we must **modify** existing code.
 
-#### Avec Architecture Hexagonale (Ports & Adapters)
+#### With Hexagonal Architecture (Ports & Adapters)
 ```php
-// Port (Domain) - Interface stable
+// Port (Domain) - Stable interface
 interface NotificationSenderInterface
 {
     public function send(Notification $notification): void;
@@ -172,7 +172,7 @@ class SmsNotificationSender implements NotificationSenderInterface
     }
 }
 
-// Adapter 3 - Slack (NOUVEAU - sans modifier le code existant!)
+// Adapter 3 - Slack (NEW - without modifying existing code!)
 class SlackNotificationSender implements NotificationSenderInterface
 {
     public function send(Notification $notification): void
@@ -186,7 +186,7 @@ class SlackNotificationSender implements NotificationSenderInterface
     }
 }
 
-// Application Layer - Utilise les adapters
+// Application Layer - Uses adapters
 class SendNotificationHandler
 {
     /** @param NotificationSenderInterface[] $senders */
@@ -204,19 +204,19 @@ class SendNotificationHandler
 }
 ```
 
-**Avantages:**
-- Ajouter Slack = créer une **nouvelle classe**, aucune modification du code existant
-- Chaque adapter est **indépendant**
-- Pas de risque de régression
+**Benefits:**
+- Adding Slack = create a **new class**, no modification of existing code
+- Each adapter is **independent**
+- No risk of regression
 
 ---
 
 ### 1.3 Liskov Substitution Principle (LSP)
-**"Les objets doivent pouvoir être remplacés par des instances de leurs sous-types sans altérer le comportement"**
+**"Objects should be replaceable by instances of their subtypes without altering behavior"**
 
-#### Avec Architecture Hexagonale
+#### With Hexagonal Architecture
 ```php
-// Port (contrat stable)
+// Port (stable contract)
 interface UserRepositoryInterface
 {
     public function save(User $user): void;
@@ -277,32 +277,32 @@ class CachedUserRepository implements UserRepositoryInterface
     }
 }
 
-// Application - Fonctionne avec N'IMPORTE quel adapter
+// Application - Works with ANY adapter
 class RegisterUserHandler
 {
     public function __construct(
-        private UserRepositoryInterface $repository // Peut être n'importe quelle implémentation
+        private UserRepositoryInterface $repository // Can be any implementation
     ) {}
 
     public function __invoke(RegisterCommand $cmd): void
     {
         $user = new User(...);
-        $this->repository->save($user); // Fonctionne avec les 3 adapters !
+        $this->repository->save($user); // Works with all 3 adapters!
     }
 }
 ```
 
-**Avantages:**
-- **Interchangeabilité** totale des adapters
-- Tests avec `InMemoryUserRepository` (rapide, pas de DB)
-- Production avec `DoctrineUserRepository`
-- Cache transparent avec `CachedUserRepository`
-- Le handler ne sait pas et **ne doit pas savoir** quel adapter est utilisé
+**Benefits:**
+- **Total interchangeability** of adapters
+- Tests with `InMemoryUserRepository` (fast, no DB)
+- Production with `DoctrineUserRepository`
+- Transparent cache with `CachedUserRepository`
+- The handler doesn't know and **shouldn't know** which adapter is used
 
 ---
 
 ### 1.4 Interface Segregation Principle (ISP)
-**"Ne pas forcer un client à dépendre d'interfaces qu'il n'utilise pas"**
+**"Don't force a client to depend on interfaces it doesn't use"**
 
 #### Violation
 ```php
@@ -319,64 +319,64 @@ interface UserRepositoryInterface
     public function restore(string $backup): void;
 }
 
-// Un handler qui veut juste sauvegarder doit dépendre de 9 méthodes !
+// A handler that just wants to save must depend on 9 methods!
 class RegisterUserHandler
 {
     public function __construct(
-        private UserRepositoryInterface $repository // Trop de méthodes inutiles
+        private UserRepositoryInterface $repository // Too many useless methods
     ) {}
 
     public function __invoke(RegisterCommand $cmd): void
     {
         $user = new User(...);
-        $this->repository->save($user); // Utilise seulement 1/9 des méthodes
+        $this->repository->save($user); // Uses only 1/9 of methods
     }
 }
 ```
 
-#### Avec Architecture Hexagonale (Ports spécialisés)
+#### With Hexagonal Architecture (Specialized Ports)
 ```php
-// Port 1 - Pour l'écriture
+// Port 1 - For writing
 interface UserWriterInterface
 {
     public function save(User $user): void;
 }
 
-// Port 2 - Pour la lecture simple
+// Port 2 - For simple reading
 interface UserReaderInterface
 {
     public function findById(UserId $id): ?User;
 }
 
-// Port 3 - Pour la recherche
+// Port 3 - For searching
 interface UserSearchInterface
 {
     public function search(UserSearchCriteria $criteria): array;
 }
 
-// Handlers utilisent UNIQUEMENT ce dont ils ont besoin
+// Handlers use ONLY what they need
 class RegisterUserHandler
 {
     public function __construct(
-        private UserWriterInterface $writer // Seulement 1 méthode
+        private UserWriterInterface $writer // Only 1 method
     ) {}
 }
 
 class FindUserHandler
 {
     public function __construct(
-        private UserReaderInterface $reader // Seulement 1 méthode
+        private UserReaderInterface $reader // Only 1 method
     ) {}
 }
 
 class SearchUsersHandler
 {
     public function __construct(
-        private UserSearchInterface $searcher // Méthodes de recherche uniquement
+        private UserSearchInterface $searcher // Search methods only
     ) {}
 }
 
-// Un adapter peut implémenter plusieurs ports
+// An adapter can implement multiple ports
 class DoctrineUserRepository implements
     UserWriterInterface,
     UserReaderInterface,
@@ -388,27 +388,27 @@ class DoctrineUserRepository implements
 }
 ```
 
-**Avantages:**
-- Chaque handler dépend **uniquement** de ce qu'il utilise
-- Interfaces **petites** et **cohérentes**
-- Facile à mocker pour les tests
+**Benefits:**
+- Each handler depends **only** on what it uses
+- **Small** and **cohesive** interfaces
+- Easy to mock for tests
 
 ---
 
 ### 1.5 Dependency Inversion Principle (DIP)
-**"Dépendre d'abstractions, pas d'implémentations concrètes"**
+**"Depend on abstractions, not concrete implementations"**
 
-C'est le **principe central** de l'architecture hexagonale !
+This is the **central principle** of hexagonal architecture!
 
-#### Violation 1 - Dépendance à des classes concrètes
+#### Violation 1 - Dependency on concrete classes
 ```php
-// Violation DIRECTE du DIP - Dépend de classes concrètes
+// DIRECT DIP violation - Depends on concrete classes
 class RegisterUserService
 {
     public function __construct(
-        private EntityManager $em,              // Classe concrète Doctrine
-        private Mailer $mailer,                 // Classe concrète Symfony
-        private FileLogger $logger              // Classe concrète
+        private EntityManager $em,              // Concrete Doctrine class
+        private Mailer $mailer,                 // Concrete Symfony class
+        private FileLogger $logger              // Concrete class
     ) {}
 
     public function register(string $email, string $password): void
@@ -424,23 +424,23 @@ class RegisterUserService
 }
 ```
 
-**Problèmes:**
-- Dépend de **classes concrètes** au lieu d'abstractions
-- Impossible de mocker pour les tests
-- Impossible de changer l'implémentation
+**Problems:**
+- Depends on **concrete classes** instead of abstractions
+- Impossible to mock for tests
+- Impossible to change implementation
 
 ---
 
-#### Violation 2 - Abstractions définies par l'infrastructure (plus subtil)
+#### Violation 2 - Abstractions defined by infrastructure (more subtle)
 ```php
-// Violation ARCHITECTURALE du DIP - Utilise des interfaces,
-// MAIS définies par l'infrastructure, pas par le Domain
+// ARCHITECTURAL DIP violation - Uses interfaces,
+// BUT defined by infrastructure, not by Domain
 class RegisterUserService
 {
     public function __construct(
-        private EntityManagerInterface $em,        // Interface définie par Doctrine
-        private MailerInterface $mailer,           // Interface définie par Symfony
-        private LoggerInterface $logger            // Interface définie par PSR
+        private EntityManagerInterface $em,        // Interface defined by Doctrine
+        private MailerInterface $mailer,           // Interface defined by Symfony
+        private LoggerInterface $logger            // Interface defined by PSR
     ) {}
 
     public function register(string $email, string $password): void
@@ -448,57 +448,57 @@ class RegisterUserService
         $user = new User();
         $user->setEmail($email);
 
-        $this->em->persist($user);   // API Doctrine (persist/flush)
+        $this->em->persist($user);   // Doctrine API (persist/flush)
         $this->em->flush();
 
-        $this->mailer->send(...);    // API Symfony Mailer
+        $this->mailer->send(...);    // Symfony Mailer API
     }
 }
 ```
 
-**Problème subtil mais critique:**
-- **Bon point:** Utilise des **interfaces** (mieux que des classes concrètes)
-- **MAIS:** Ces interfaces sont **définies par l'infrastructure** (Doctrine/Symfony), pas par votre Domain
-- Votre Application **dépend de l'infrastructure** pour connaître les contrats
-- **Direction de dépendance incorrecte**: Application → Infrastructure
-- L'Application utilise le **vocabulaire technique** de Doctrine (`persist()`, `flush()`) au lieu du **vocabulaire métier** (`save()`)
-- Changer de Doctrine à autre chose nécessite de **modifier tout le code** qui utilise `persist()/flush()`
+**Subtle but critical problem:**
+- **Good point:** Uses **interfaces** (better than concrete classes)
+- **BUT:** These interfaces are **defined by infrastructure** (Doctrine/Symfony), not by your Domain
+- Your Application **depends on infrastructure** to know contracts
+- **Incorrect dependency direction**: Application → Infrastructure
+- Application uses **technical vocabulary** of Doctrine (`persist()`, `flush()`) instead of **business vocabulary** (`save()`)
+- Changing from Doctrine to something else requires **modifying all code** that uses `persist()/flush()`
 
-**Pourquoi c'est une violation du DIP:**
+**Why this is a DIP violation:**
 ```
-📦 Domain/Application (haut niveau)
-        ↓ dépend de
-🔌 Infrastructure (bas niveau)
+📦 Domain/Application (high level)
+        ↓ depends on
+🔌 Infrastructure (low level)
 ```
 
-**Le DIP dit:** Les modules de haut niveau ne doivent PAS dépendre des modules de bas niveau. Les deux doivent dépendre d'abstractions.
+**DIP says:** High-level modules should NOT depend on low-level modules. Both should depend on abstractions.
 
-Ici, votre **Application** (haut niveau) dépend de **Doctrine/Symfony** (bas niveau) pour définir les contrats.
+Here, your **Application** (high level) depends on **Doctrine/Symfony** (low level) to define contracts.
 
-#### Avec Architecture Hexagonale (DIP Correct)
+#### With Hexagonal Architecture (Correct DIP)
 ```php
-// 1️⃣ Domain Layer - DÉFINIT ses propres abstractions (PORTS)
+// 1️⃣ Domain Layer - DEFINES its own abstractions (PORTS)
 namespace App\User\Domain\Port;
 
-interface UserRepositoryInterface  // Interface définie par le DOMAIN
+interface UserRepositoryInterface  // Interface defined by DOMAIN
 {
-    public function save(User $user): void;           // Vocabulaire métier
-    public function ofId(UserId $id): ?User;          // Vocabulaire métier
+    public function save(User $user): void;           // Business vocabulary
+    public function ofId(UserId $id): ?User;          // Business vocabulary
 }
 
-interface EmailSenderInterface     // Interface définie par le DOMAIN
+interface EmailSenderInterface     // Interface defined by DOMAIN
 {
-    public function sendWelcomeEmail(User $user): void;  // Vocabulaire métier
+    public function sendWelcomeEmail(User $user): void;  // Business vocabulary
 }
 
-// 2️⃣ Application Layer - Dépend UNIQUEMENT des abstractions du Domain
+// 2️⃣ Application Layer - Depends ONLY on Domain abstractions
 namespace App\User\Application;
 
 class RegisterUserHandler
 {
     public function __construct(
-        private UserRepositoryInterface $repository,  // Port du Domain
-        private EmailSenderInterface $emailSender     // Port du Domain
+        private UserRepositoryInterface $repository,  // Domain Port
+        private EmailSenderInterface $emailSender     // Domain Port
     ) {}
 
     public function __invoke(RegisterCommand $cmd): void
@@ -508,23 +508,23 @@ class RegisterUserHandler
             HashedPassword::fromPlain($cmd->password)
         );
 
-        $this->repository->save($user);              // Vocabulaire métier
-        $this->emailSender->sendWelcomeEmail($user); // Vocabulaire métier
+        $this->repository->save($user);              // Business vocabulary
+        $this->emailSender->sendWelcomeEmail($user); // Business vocabulary
     }
 }
 
-// 3️⃣ Infrastructure Layer - IMPLÉMENTE les abstractions du Domain
+// 3️⃣ Infrastructure Layer - IMPLEMENTS Domain abstractions
 namespace App\User\Infrastructure\Persistence;
 
-class DoctrineUserRepository implements UserRepositoryInterface  // Implémente le port
+class DoctrineUserRepository implements UserRepositoryInterface  // Implements port
 {
     public function __construct(
-        private EntityManagerInterface $em  // Doctrine utilisé ICI seulement
+        private EntityManagerInterface $em  // Doctrine used HERE only
     ) {}
 
     public function save(User $user): void
     {
-        $this->em->persist($user);   // Détails techniques cachés ici
+        $this->em->persist($user);   // Technical details hidden here
         $this->em->flush();
     }
 
@@ -536,10 +536,10 @@ class DoctrineUserRepository implements UserRepositoryInterface  // Implémente 
 
 namespace App\User\Infrastructure\Messaging;
 
-class SymfonyEmailSender implements EmailSenderInterface  // Implémente le port
+class SymfonyEmailSender implements EmailSenderInterface  // Implements port
 {
     public function __construct(
-        private MailerInterface $mailer  // Symfony Mailer utilisé ICI seulement
+        private MailerInterface $mailer  // Symfony Mailer used HERE only
     ) {}
 
     public function sendWelcomeEmail(User $user): void
@@ -549,12 +549,12 @@ class SymfonyEmailSender implements EmailSenderInterface  // Implémente le port
             ->subject('Welcome!')
             ->html('...');
 
-        $this->mailer->send($email);  // Détails techniques cachés ici
+        $this->mailer->send($email);  // Technical details hidden here
     }
 }
 ```
 
-**Direction des dépendances (CORRECTE):**
+**Dependency direction (CORRECT):**
 ```
 🔌 Infrastructure (DoctrineUserRepository, SymfonyEmailSender)
         ↓ implements
@@ -565,9 +565,9 @@ class SymfonyEmailSender implements EmailSenderInterface  // Implémente le port
 💎 Domain (User, Email, HashedPassword)
 ```
 
-**Tous les modules dépendent du Domain, pas l'inverse !**
+**All modules depend on Domain, not the reverse!**
 
-**Flux de dépendances:**
+**Dependency flow:**
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'15px'}}}%%
@@ -584,32 +584,32 @@ graph BT
     style Infra fill:#F8BBD0,stroke:#C2185B,stroke-width:3px,color:#000
 ```
 
-**L'Infrastructure dépend du Domain, PAS l'inverse !**
+**Infrastructure depends on Domain, NOT the reverse!**
 
-**Avantages:**
-- Le **Domain** ne dépend de **RIEN** (zéro dépendance externe)
-- L'**Application** dépend **uniquement du Domain** (pas de l'infrastructure)
-- L'**Infrastructure** dépend du **Domain** et **implémente ses ports**
-- Les **interfaces** sont définies par le **Domain** (votre métier), pas par Doctrine/Symfony
-- Le code utilise le **vocabulaire métier** (`save()`, `ofId()`) au lieu du vocabulaire technique (`persist()`, `flush()`)
-- Changement d'infrastructure = créer un nouvel adapter, **zéro modification** du Domain/Application
+**Benefits:**
+- The **Domain** depends on **NOTHING** (zero external dependencies)
+- The **Application** depends **only on Domain** (not on infrastructure)
+- The **Infrastructure** depends on **Domain** and **implements its ports**
+- The **interfaces** are defined by **Domain** (your business), not by Doctrine/Symfony
+- Code uses **business vocabulary** (`save()`, `ofId()`) instead of technical vocabulary (`persist()`, `flush()`)
+- Infrastructure change = create new adapter, **zero modification** of Domain/Application
 
-**Comparaison concrète:**
+**Concrete comparison:**
 
-| Aspect | Violation DIP | Hexagonal (DIP Correct) |
+| Aspect | DIP Violation | Hexagonal (Correct DIP) |
 |--------|---------------|-------------------------|
-| **Qui définit l'interface?** | Doctrine/Symfony | Votre Domain |
-| **Direction dépendance** | App → Infrastructure | Infrastructure → Domain |
-| **Vocabulaire utilisé** | Technique (`persist`, `flush`) | Métier (`save`, `ofId`) |
-| **Changer Doctrine** | Modifier tout le code | Créer nouvel adapter |
-| **Tests** | Dépend de Doctrine | In-memory (rapide) |
-| **Framework upgrade** | Casse l'application | Modifier adapters seulement |
+| **Who defines interface?** | Doctrine/Symfony | Your Domain |
+| **Dependency direction** | App → Infrastructure | Infrastructure → Domain |
+| **Vocabulary used** | Technical (`persist`, `flush`) | Business (`save`, `ofId`) |
+| **Change Doctrine** | Modify all code | Create new adapter |
+| **Tests** | Depends on Doctrine | In-memory (fast) |
+| **Framework upgrade** | Breaks application | Modify adapters only |
 
 ---
 
-## 2. Architecture Hexagonale vs Architecture en Couches
+## 2. Hexagonal Architecture vs Layered Architecture
 
-### Architecture en Couches Traditionnelle (Layered)
+### Traditional Layered Architecture
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'15px'}}}%%
@@ -629,20 +629,20 @@ graph TD
     style Database fill:#FFCDD2,stroke:#C62828,stroke-width:4px,color:#000
 ```
 
-#### 2.1.1 Problèmes de l'Architecture en Couches
+#### 2.1.1 Problems of Layered Architecture
 
-**1. Dépendance vers le bas (Database Centric)**
+**1. Downward dependency (Database Centric)**
 ```php
-// Business Layer dépend de la Data Layer
+// Business Layer depends on Data Layer
 class UserService
 {
     public function __construct(
-        private EntityManagerInterface $em  // Couplé à Doctrine
+        private EntityManagerInterface $em  // Coupled to Doctrine
     ) {}
 
     public function registerUser(string $email): void
     {
-        $user = new User();  // Entity Doctrine avec annotations
+        $user = new User();  // Doctrine Entity with annotations
         $user->setEmail($email);
 
         $this->em->persist($user);
@@ -651,15 +651,15 @@ class UserService
 }
 ```
 
-**Conséquences:**
-- Impossible de tester sans base de données
-- Changement de base de données = réécriture du Business Layer
-- La logique métier est **couplée** à la technologie de persistance
-- Les Entities contiennent des annotations Doctrine (pas de Domain pur)
+**Consequences:**
+- Impossible to test without database
+- Database change = Business Layer rewrite
+- Business logic is **coupled** to persistence technology
+- Entities contain Doctrine annotations (not pure Domain)
 
-**2. Logique métier diluée**
+**2. Diluted business logic**
 ```php
-// Entity avec annotations Doctrine - PAS un vrai Domain Model
+// Entity with Doctrine annotations - NOT a real Domain Model
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -674,25 +674,25 @@ class User
     #[ORM\Column(type: 'string')]
     private string $email;
 
-    // Getters/Setters - PAS de logique métier
+    // Getters/Setters - NO business logic
     public function setEmail(string $email): void
     {
-        $this->email = $email;  // Pas de validation
+        $this->email = $email;  // No validation
     }
 }
 
-// Service contient toute la logique
+// Service contains all logic
 class UserService
 {
     public function registerUser(string $email): void
     {
-        // Validation dans le service (devrait être dans le domain)
+        // Validation in service (should be in domain)
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Invalid email');
         }
 
         $user = new User();
-        $user->setEmail($email);  // Entity = simple conteneur de données
+        $user->setEmail($email);  // Entity = simple data container
 
         $this->em->persist($user);
         $this->em->flush();
@@ -700,35 +700,35 @@ class UserService
 }
 ```
 
-**Conséquences:**
-- Entity = conteneur de données sans logique (Anemic Domain Model)
-- Logique métier éparpillée dans les Services
-- Difficile de comprendre les règles métier
-- Duplication de la validation dans plusieurs services
+**Consequences:**
+- Entity = data container without logic (Anemic Domain Model)
+- Business logic scattered in Services
+- Difficult to understand business rules
+- Validation duplication in multiple services
 
-**3. Difficile à tester**
+**3. Hard to test**
 ```php
 class UserServiceTest extends TestCase
 {
     public function testRegisterUser(): void
     {
-        // Besoin d'une vraie base de données
+        // Need a real database
         $entityManager = $this->createEntityManager();
 
-        // Besoin de fixtures
+        // Need fixtures
         $this->loadFixtures();
 
         $service = new UserService($entityManager);
         $service->registerUser('test@example.com');
 
-        // Test lent (I/O database)
+        // Slow test (I/O database)
         $user = $entityManager->find(User::class, 1);
         $this->assertEquals('test@example.com', $user->getEmail());
     }
 }
 ```
 
-### Architecture Hexagonale (Ports & Adapters)
+### Hexagonal Architecture (Ports & Adapters)
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'14px'}}}%%
@@ -766,22 +766,22 @@ graph TB
     style INFRA fill:#F8BBD0,stroke:#C2185B,stroke-width:3px,color:#000
 ```
 
-#### 2.2.1 Avantages de l'Architecture Hexagonale
+#### 2.2.1 Benefits of Hexagonal Architecture
 
-**1. Domain indépendant (Domain Centric)**
+**1. Independent Domain (Domain Centric)**
 ```php
-// Domain Layer - Pur PHP, AUCUNE dépendance
+// Domain Layer - Pure PHP, NO dependencies
 namespace App\User\Domain\Model;
 
 final class User
 {
     public function __construct(
         private UserId $id,
-        private Email $email,  // Value Object avec validation
+        private Email $email,  // Value Object with validation
         private bool $isActive = false
     ) {}
 
-    // Logique métier dans le domain
+    // Business logic in domain
     public function activate(): void
     {
         if ($this->isActive) {
@@ -793,7 +793,7 @@ final class User
 
     public function changeEmail(Email $newEmail): void
     {
-        // Règle métier: email doit être différent
+        // Business rule: email must be different
         if ($this->email->equals($newEmail)) {
             throw new SameEmailException();
         }
@@ -802,7 +802,7 @@ final class User
     }
 }
 
-// Value Object avec validation
+// Value Object with validation
 final readonly class Email
 {
     public function __construct(public string $value)
@@ -819,15 +819,15 @@ final readonly class Email
 }
 ```
 
-**Avantages:**
-- Logique métier **centralisée** dans le Domain
-- **Zéro** dépendance externe (pas d'annotations)
-- Validation **encapsulée** dans les Value Objects
-- Règles métier **explicites** et testables
+**Benefits:**
+- Business logic **centralized** in Domain
+- **Zero** external dependencies (no annotations)
+- Validation **encapsulated** in Value Objects
+- Business rules **explicit** and testable
 
-**2. Testabilité**
+**2. Testability**
 ```php
-// Test du Domain - Ultra rapide, aucune dépendance
+// Domain Test - Ultra fast, no dependencies
 class UserTest extends TestCase
 {
     public function testUserCanBeActivated(): void
@@ -856,12 +856,12 @@ class UserTest extends TestCase
     }
 }
 
-// Test du Handler avec In-Memory repository
+// Handler Test with In-Memory repository
 class RegisterUserHandlerTest extends TestCase
 {
     public function testUserIsRegistered(): void
     {
-        $repository = new InMemoryUserRepository();  // Pas de DB
+        $repository = new InMemoryUserRepository();  // No DB
         $handler = new RegisterUserHandler($repository);
 
         $command = new RegisterCommand('test@example.com', 'password');
@@ -872,61 +872,61 @@ class RegisterUserHandlerTest extends TestCase
 }
 ```
 
-**Avantages:**
-- Tests **ultra-rapides** (pas d'I/O)
-- Tests **isolés** (pas de DB, pas de fixtures)
-- Tests du domain **sans framework**
+**Benefits:**
+- **Ultra-fast** tests (no I/O)
+- **Isolated** tests (no DB, no fixtures)
+- Domain tests **without framework**
 
-**3. Flexibilité technologique**
+**3. Technological flexibility**
 ```php
-// En développement: In-Memory
+// In development: In-Memory
 $container->set(UserRepositoryInterface::class, InMemoryUserRepository::class);
 
-// En production: Doctrine
+// In production: Doctrine
 $container->set(UserRepositoryInterface::class, DoctrineUserRepository::class);
 
-// En production avec cache: Decorator
+// In production with cache: Decorator
 $container->set(UserRepositoryInterface::class, CachedUserRepository::class);
 ```
 
-**Avantages:**
-- Changement de technologie **sans toucher au code métier**
-- Plusieurs implémentations possibles
-- Stack technology evolutive
+**Benefits:**
+- Technology change **without touching business code**
+- Multiple implementations possible
+- Evolutionary technology stack
 
 ---
 
-## 3. Les Risques d'une Mauvaise Architecture
+## 3. Risks of Poor Architecture
 
-### 1. Le Modèle Anémique (Anemic Domain Model)
+### 1. Anemic Domain Model
 
 #### 3.1.1 Anti-pattern
 ```php
-// Entity = simple conteneur de données
+// Entity = simple data container
 class Order
 {
     private int $id;
     private string $status;
     private float $total;
 
-    // Getters/Setters uniquement
+    // Getters/Setters only
     public function setStatus(string $status): void
     {
-        $this->status = $status;  // Aucune validation
+        $this->status = $status;  // No validation
     }
 
     public function setTotal(float $total): void
     {
-        $this->total = $total;  // Peut être négatif
+        $this->total = $total;  // Can be negative
     }
 }
 
-// Service contient toute la logique
+// Service contains all logic
 class OrderService
 {
     public function placeOrder(Order $order): void
     {
-        // Validation éparpillée dans le service
+        // Validation scattered in service
         if ($order->getTotal() < 0) {
             throw new Exception('Invalid total');
         }
@@ -939,7 +939,7 @@ class OrderService
 
     public function cancelOrder(Order $order): void
     {
-        // Duplication de la logique de validation
+        // Duplication of validation logic
         if ($order->getStatus() === 'shipped') {
             throw new Exception('Cannot cancel shipped order');
         }
@@ -951,11 +951,11 @@ class OrderService
 }
 ```
 
-**Risques:**
-- **Duplication** de la logique dans plusieurs services
-- **Incohérence** (différents services peuvent avoir des règles différentes)
-- **Bugs** difficiles à trouver (pas de validation centralisée)
-- **Maintenance cauchemardesque** (logique éparpillée)
+**Risks:**
+- **Duplication** of logic in multiple services
+- **Inconsistency** (different services may have different rules)
+- **Bugs** hard to find (no centralized validation)
+- **Nightmarish maintenance** (scattered logic)
 
 #### 3.1.2 Rich Domain Model (Hexagonal)
 ```php
@@ -979,7 +979,7 @@ final class Order
         }
     }
 
-    // Logique métier encapsulée
+    // Encapsulated business logic
     public function confirm(): void
     {
         if ($this->status !== OrderStatus::PENDING) {
@@ -1014,28 +1014,28 @@ class ConfirmOrderHandler
     public function __invoke(ConfirmOrderCommand $cmd): void
     {
         $order = $this->repository->findById($cmd->orderId);
-        $order->confirm();  // Logique dans le domain
+        $order->confirm();  // Logic in domain
         $this->repository->save($order);
     }
 }
 ```
 
-**Avantages:**
-- Logique **centralisée** dans l'entity
-- **Impossible** de mettre l'objet dans un état invalide
-- **Type-safe** (enum au lieu de string)
-- Règles métier **explicites**
+**Benefits:**
+- Logic **centralized** in entity
+- **Impossible** to put object in invalid state
+- **Type-safe** (enum instead of string)
+- Business rules **explicit**
 
-### 2. Le Couplage Fort (Tight Coupling)
+### 2. Tight Coupling
 
-#### 3.2.1 Couplage fort
+#### 3.2.1 Tight coupling
 ```php
 class UserService
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private Swift_Mailer $mailer,  // Couplé à SwiftMailer
-        private MonologLogger $logger   // Couplé à Monolog
+        private Swift_Mailer $mailer,  // Coupled to SwiftMailer
+        private MonologLogger $logger   // Coupled to Monolog
     ) {}
 
     public function register(string $email): void
@@ -1046,7 +1046,7 @@ class UserService
         $this->em->persist($user);
         $this->em->flush();
 
-        // Si on veut changer de mailer, il faut modifier tout ça
+        // If we want to change mailer, we must modify all this
         $message = (new Swift_Message('Welcome'))
             ->setTo($email)
             ->setBody('Welcome!');
@@ -1056,12 +1056,12 @@ class UserService
 }
 ```
 
-**Risques:**
-- **Impossible de changer** SwiftMailer sans réécrire le code
-- **Tests difficiles** (besoin de vraies dépendances)
-- **Migration framework impossible** (couplage fort)
+**Risks:**
+- **Impossible to change** SwiftMailer without rewriting code
+- **Hard tests** (need real dependencies)
+- **Impossible framework migration** (tight coupling)
 
-#### 3.2.2 Faible couplage (Hexagonal)
+#### 3.2.2 Loose coupling (Hexagonal)
 ```php
 // Port
 interface EmailSenderInterface
@@ -1098,7 +1098,7 @@ class RegisterUserHandler
             body: 'Welcome to our platform!'
         );
 
-        $this->emailSender->send($email);  // Ne sait pas comment
+        $this->emailSender->send($email);  // Doesn't know how
     }
 }
 
@@ -1115,7 +1115,7 @@ class SwiftMailerAdapter implements EmailSenderInterface
     }
 }
 
-// Adapter 2 - Symfony Mailer (migration facile!)
+// Adapter 2 - Symfony Mailer (easy migration!)
 class SymfonyMailerAdapter implements EmailSenderInterface
 {
     public function send(Email $email): void
@@ -1130,16 +1130,16 @@ class SymfonyMailerAdapter implements EmailSenderInterface
 }
 ```
 
-**Avantages:**
-- Migration SwiftMailer → Symfony Mailer **sans toucher au handler**
-- Tests avec `FakeEmailSender`
-- Peut avoir plusieurs adapters (email + SMS)
+**Benefits:**
+- SwiftMailer → Symfony Mailer migration **without touching handler**
+- Tests with `FakeEmailSender`
+- Can have multiple adapters (email + SMS)
 
-### 3. Le Big Ball of Mud
+### 3. Big Ball of Mud
 
-#### 3.3.1 Sans architecture
+#### 3.3.1 Without architecture
 ```php
-// Tout est mélangé dans le controller
+// Everything mixed in controller
 class OrderController
 {
     public function create(Request $request): Response
@@ -1149,19 +1149,19 @@ class OrderController
             return new JsonResponse(['error' => 'No items'], 400);
         }
 
-        // Calcul métier
+        // Business calculation
         $total = 0;
         foreach ($request->get('items') as $item) {
             $product = $this->em->find(Product::class, $item['id']);
             $total += $product->getPrice() * $item['quantity'];
         }
 
-        // Création
+        // Creation
         $order = new Order();
         $order->setTotal($total);
         $order->setStatus('pending');
 
-        // Persistance
+        // Persistence
         $this->em->persist($order);
         $this->em->flush();
 
@@ -1171,7 +1171,7 @@ class OrderController
         // Log
         $this->logger->info('Order created: ' . $order->getId());
 
-        // Envoi événement
+        // Send event
         $this->eventBus->dispatch(new OrderCreated($order));
 
         return new JsonResponse(['id' => $order->getId()]);
@@ -1179,15 +1179,15 @@ class OrderController
 }
 ```
 
-**Risques:**
-- **Impossible à tester** (trop de dépendances)
-- **Impossible à maintenir** (tout est mélangé)
-- **Impossible à réutiliser** (couplé au HTTP)
-- **Impossible d'ajouter une API GraphQL** (logique dans le controller)
+**Risks:**
+- **Impossible to test** (too many dependencies)
+- **Impossible to maintain** (everything mixed)
+- **Impossible to reuse** (coupled to HTTP)
+- **Impossible to add GraphQL API** (logic in controller)
 
-#### 3.3.2 Avec Hexagonal
+#### 3.3.2 With Hexagonal
 ```php
-// Controller = adapter HTTP
+// Controller = HTTP adapter
 class OrderController
 {
     public function create(Request $request): Response
@@ -1203,7 +1203,7 @@ class OrderController
     }
 }
 
-// GraphQL = adapter GraphQL (réutilise la même logique!)
+// GraphQL = GraphQL adapter (reuses same logic!)
 class OrderMutation
 {
     public function createOrder(array $items, string $customerId): string
@@ -1213,7 +1213,7 @@ class OrderMutation
     }
 }
 
-// CLI = adapter CLI (même logique!)
+// CLI = CLI adapter (same logic!)
 class CreateOrderCommand extends Command
 {
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -1230,88 +1230,88 @@ class CreateOrderCommand extends Command
 }
 ```
 
-**Avantages:**
-- **Une seule implémentation** réutilisée par HTTP, GraphQL, CLI
-- **Testable** indépendamment
-- **Évolutif** (ajouter gRPC = nouvel adapter)
+**Benefits:**
+- **Single implementation** reused by HTTP, GraphQL, CLI
+- **Testable** independently
+- **Evolutive** (adding gRPC = new adapter)
 
 ---
 
-## 4. Tableau Comparatif
+## 4. Comparison Table
 
-| Aspect | Architecture Layered | Architecture Hexagonale |
+| Aspect | Layered Architecture | Hexagonal Architecture |
 |--------|---------------------|------------------------|
-| **Dépendances** | Vers le bas (DB-centric) | Vers le centre (Domain-centric) |
-| **Testabilité** | Tests lents (DB requise) | Tests rapides (in-memory) |
-| **Logique métier** | Éparpillée dans services | Centralisée dans Domain |
-| **Couplage** | Fort (framework, ORM) | Faible (ports/adapters) |
-| **Changement techno** | Réécriture massive | Nouveau adapter |
-| **Réutilisabilité** | Difficile | Facile (même use case, plusieurs adapters) |
-| **Principe SOLID** | Violations fréquentes | Respect total |
-| **Complexité initiale** | Faible | Moyenne |
-| **Maintenabilité long terme** | Difficile | Excellente |
+| **Dependencies** | Downward (DB-centric) | Inward (Domain-centric) |
+| **Testability** | Slow tests (DB required) | Fast tests (in-memory) |
+| **Business logic** | Scattered in services | Centralized in Domain |
+| **Coupling** | Tight (framework, ORM) | Loose (ports/adapters) |
+| **Tech change** | Massive rewrite | New adapter |
+| **Reusability** | Difficult | Easy (same use case, multiple adapters) |
+| **SOLID Principles** | Frequent violations | Total respect |
+| **Initial complexity** | Low | Medium |
+| **Long-term maintainability** | Difficult | Excellent |
 
 ---
 
 ## 5. Conclusion
 
-### Quand utiliser l'Architecture Hexagonale ?
+### When to use Hexagonal Architecture?
 
-**Utiliser Hexagonal si:**
-- Projet **complexe** avec beaucoup de logique métier
-- Projet **long terme** (maintenance sur plusieurs années)
-- Équipe qui grandit
-- Besoin de **plusieurs interfaces** (API REST, GraphQL, CLI)
-- Tests **automatisés** critiques
-- Stack technologique susceptible d'**évoluer**
+**Use Hexagonal if:**
+- **Complex** project with lots of business logic
+- **Long-term** project (maintenance over several years)
+- Growing team
+- Need for **multiple interfaces** (REST API, GraphQL, CLI)
+- **Automated tests** critical
+- Technology stack likely to **evolve**
 
-**Ne pas utiliser si:**
-- Prototype rapide
-- CRUD simple sans logique métier
-- Projet jetable (< 6 mois)
-- Équipe très junior (courbe d'apprentissage)
+**Don't use if:**
+- Quick prototype
+- Simple CRUD without business logic
+- Throwaway project (< 6 months)
+- Very junior team (learning curve)
 
-### Principes SOLID = Fondation de l'Hexagonal
+### SOLID Principles = Foundation of Hexagonal
 
-L'architecture hexagonale n'est pas "en plus" de SOLID, c'est **l'application concrète** des principes SOLID à l'échelle d'une application :
+Hexagonal architecture is not "in addition" to SOLID, it's **the concrete application** of SOLID principles at application scale:
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'fontSize':'14px'}}}%%
 graph TB
-    subgraph SOLID["📚 Principes SOLID"]
-        SRP["🎯 Single Responsibility<br/><small>Une responsabilité par classe</small>"]
-        OCP["🔓 Open/Closed<br/><small>Ouvert extension, fermé modification</small>"]
-        LSP["🔄 Liskov Substitution<br/><small>Contrats respectés</small>"]
-        ISP["✂️ Interface Segregation<br/><small>Interfaces spécialisées</small>"]
-        DIP["⬆️ Dependency Inversion<br/><small>Dépendre d'abstractions</small>"]
+    subgraph SOLID["📚 SOLID Principles"]
+        SRP["🎯 Single Responsibility<br/><small>One responsibility per class</small>"]
+        OCP["🔓 Open/Closed<br/><small>Open extension, closed modification</small>"]
+        LSP["🔄 Liskov Substitution<br/><small>Contracts respected</small>"]
+        ISP["✂️ Interface Segregation<br/><small>Specialized interfaces</small>"]
+        DIP["⬆️ Dependency Inversion<br/><small>Depend on abstractions</small>"]
     end
 
-    subgraph HEX["🏛️ Architecture Hexagonale"]
-        Layers["📊 Séparation en couches"]
+    subgraph HEX["🏛️ Hexagonal Architecture"]
+        Layers["📊 Layer separation"]
         Ports["🔗 Ports - Interfaces"]
-        Adapters["🔌 Adapters - Implémentations"]
-        Core["💎 Domain - Cœur isolé"]
+        Adapters["🔌 Adapters - Implementations"]
+        Core["💎 Domain - Isolated core"]
     end
 
-    SRP ==>|"appliqué à"| Layers
-    OCP ==>|"permis par"| Adapters
-    LSP ==>|"garanti par"| Adapters
-    ISP ==>|"implémenté via"| Ports
-    DIP ==>|"matérialisé par"| Core
+    SRP ==>|"applied to"| Layers
+    OCP ==>|"enabled by"| Adapters
+    LSP ==>|"guaranteed by"| Adapters
+    ISP ==>|"implemented via"| Ports
+    DIP ==>|"materialized by"| Core
 
     style SOLID fill:#B3E5FC,stroke:#0277BD,stroke-width:3px,color:#000
     style HEX fill:#C8E6C9,stroke:#2E7D32,stroke-width:3px,color:#000
     style Core fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#000
 ```
 
-**Correspondances:**
+**Correspondences:**
 
-- **SRP** → Chaque couche a une responsabilité
-- **OCP** → Nouveaux adapters sans modifier le code existant
-- **LSP** → Adapters interchangeables
-- **ISP** → Ports spécialisés
-- **DIP** → Domain ne dépend de rien, Infrastructure dépend du Domain
+- **SRP** → Each layer has one responsibility
+- **OCP** → New adapters without modifying existing code
+- **LSP** → Interchangeable adapters
+- **ISP** → Specialized ports
+- **DIP** → Domain depends on nothing, Infrastructure depends on Domain
 
 ---
 
-**Rappel:** Ce bundle vous aide à respecter ces principes automatiquement en générant la bonne structure.
+**Reminder:** This bundle helps you respect these principles automatically by generating the right structure.

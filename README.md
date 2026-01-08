@@ -30,13 +30,10 @@
 - [3. Installation](#3-installation)
 - [4. Complete Architecture Generation](#4-complete-architecture-generation)
 - [5. Available Makers (18 Commands)](#5-available-makers)
-- [6. Complete Example](#6-complete-example)
-- [7. Configuration](#7-configuration)
-- [8. Best Practices](#8-best-practices)
-- [9. Additional Resources](#9-additional-resources)
-- [10. Contributing](#10-contributing)
-- [11. Credits](#11-credits)
-- [12. License](#12-license)
+- [6. Configuration](#6-configuration)
+- [7. Best Practices](#7-best-practices)
+- [8. Additional Resources](#8-additional-resources)
+- [9. License](#9-license)
 
 ---
 
@@ -66,10 +63,8 @@ bin/console make:hexagonal:form user/account User
 ## 1. Features
 
 ### 1.1 Core CQRS Components
-- **Commands** - Write operations with handlers
-- **Queries** - Read operations with handlers and responses
-- **Command Handlers** - Business logic execution with `#[AsMessageHandler]`
-- **Query Handlers** - Data retrieval logic with `#[AsMessageHandler]`
+- **Commands** - Write operations that modify state (e.g., `CreateUserCommand`) with their handlers (e.g., `CreateUserCommandHandler`) decorated with `#[AsMessageHandler]` for business logic execution
+- **Queries** - Read operations that retrieve data (e.g., `FindUserQuery`) with their handlers (e.g., `FindUserQueryHandler`) decorated with `#[AsMessageHandler]` and response DTOs (e.g., `FindUserResponse`)
 
 ### 1.2 Complete Maker Commands Summary
 
@@ -112,28 +107,20 @@ Hexagonal architecture isn't about eliminating coupling—that's impossible. It'
 ### The Core Problem with Traditional Architecture
 
 **Traditional layered architecture problems:**
-- Framework Prison: Business logic tightly coupled to Doctrine/Symfony
-- Testing Complexity: Every test requires database, 10 min vs 10 sec
-- Lost Business Rules: Rules scattered across 10+ files
-- Cannot Evolve: Adding GraphQL/CLI requires code duplication
-- Cost Predictability: Simple features take 3x longer after 2 years
+- ⛓️ Framework Prison: Business logic tightly coupled to Doctrine/Symfony
+- 🐢 Testing Complexity: Every test requires database, 10 min vs 10 sec
+- 🌪️ Lost Business Rules: Rules scattered across 10+ files
+- 🧱 Cannot Evolve: Adding GraphQL/CLI requires code duplication
+- 📈 Cost Predictability: Simple features take 3x longer after 2 years
 
 **Hexagonal architecture solution:**
-- **Direction Control:** Business logic depends on abstractions, infrastructure depends on business
-- **Testing Speed:** 1000x faster (in-memory vs database I/O) - 10 min → 10 sec
-- **Technology Freedom:** Swap MySQL to MongoDB in days not months (10-20x effort saved)
-- **Cost Predictability (The "5-Day Rule"):** Features cost consistent time, no technical debt tax
-- **Reusability:** Same business logic for REST, GraphQL, CLI, gRPC
-
-### Key Benefits
-
-| Benefit | Impact |
-|---------|--------|
-| 🔄 **Swap Database** | MySQL → MongoDB in 1-2 days (vs 2-4 weeks traditional) |
-| ⚡ **Fast Tests** | 1000 tests in 1 second (vs 100 tests in 5 minutes) |
-| 💰 **Predictable Costs** | Year 3: 5-7 days per feature (vs 15-25 days traditional) |
-| 🎯 **Single Truth** | One place for business rules (vs scattered across 10 files) |
-| 🚀 **Multi-Interface** | Write once, use in REST/GraphQL/CLI/Queue |
+- **💎 Pure Domain Isolation:** Your business logic lives in pure PHP, zero framework dependencies. Why? Because frameworks become obsolete, but your business rules don't. Isolated domain = no technical debt accumulation, easier to understand (speaks business language, not technical jargon), and survives all technology changes. The secret: Dependency Inversion - the domain defines interfaces (Ports), infrastructure adapts to them
+- **🎯 Direction Control:** Business logic depends on abstractions, infrastructure depends on business
+- **⚡ Testing Speed:** 1000x faster (in-memory vs database I/O) - 10 min → 10 sec
+- **🔄 Technology Freedom:** Swap MySQL to MongoDB in days not months (10-20x effort saved)
+- **💰 Cost Predictability (The "5-Day Rule"):** Features cost consistent time, no technical debt tax
+- **🚀 Reusability:** Same business logic for REST, GraphQL, CLI, gRPC
+- **🏗️ Craftsmanship Practices:** Promotes SOLID principles, DRY (Don't Repeat Yourself), YAGNI (You Aren't Gonna Need It), KISS (Keep It Simple, Stupid), Separation of Concerns (SoC), and design patterns like DTO, Strategy, Factory, Dependency Injection
 
 **The Investment Analogy:**
 - Traditional = Consumer credit: easy at start, debt strangles you later
@@ -963,41 +950,7 @@ bin/console make:hexagonal:cli-command blog/post CreatePost app:post:create
 
 ---
 
-## 6. Complete Example: User Registration
-
-> **📚 For detailed examples with full code:** See [EXAMPLES.md](EXAMPLES.md) - Complete blog, e-commerce, and booking system examples.
-
-**Step-by-step commands:**
-
-```bash
-# 1. Generate structure
-bin/console make:hexagonal:entity user/account User --with-repository
-bin/console make:hexagonal:value-object user/account Email
-bin/console make:hexagonal:command user/account register --factory
-
-# 2. Generate controller
-bin/console make:hexagonal:controller user/account Register /register
-
-# 3. Configure Doctrine (see section 7.3)
-# 4. Implement business logic in generated files
-```
-
-**What gets generated:**
-- `User` entity (pure PHP, no framework deps)
-- `Email` value object with validation
-- `RegisterCommand` + `RegisterCommandHandler` + `AccountFactory`
-- `UserRepositoryInterface` (Port) + `DoctrineUserRepository` (Adapter)
-- `RegistrationController` with routing
-- Doctrine YAML mapping
-
-**The result:**
-- Clean hexagonal architecture
-- Testable with in-memory repositories
-- Ready to swap database implementations
-
----
-
-## 7. Configuration
+## 6. Configuration
 
 Create `config/packages/hexagonal_maker.yaml`:
 
@@ -2528,9 +2481,9 @@ src/Shared/Infrastructure/Persistence/Migrations/Version20250106120000.php
 
 </details>
 
-## 8. Best Practices
+## 7. Best Practices
 
-See [ARCHITECTURE.md - Bonnes pratiques](ARCHITECTURE.md#7-bonnes-pratiques) for detailed best practices with code examples.
+See [ARCHITECTURE-EN.md - Best Practices](ARCHITECTURE-EN.md#7-best-practices) | [ARCHITECTURE.md - Bonnes pratiques (FR)](ARCHITECTURE.md#7-bonnes-pratiques) for detailed best practices with code examples.
 
 **Quick summary:**
 - Keep Domain pure (zero framework dependencies)
@@ -2541,17 +2494,12 @@ See [ARCHITECTURE.md - Bonnes pratiques](ARCHITECTURE.md#7-bonnes-pratiques) for
 
 ---
 
-## 9. Additional Resources
+## 8. Additional Resources
 
 ### Documentation
-- [Complete Architecture Guide (FR)](ARCHITECTURE.md) - Detailed explanation of hexagonal architecture concepts with diagrams
-- [SOLID Principles Guide (FR)](SOLID.md) - How hexagonal architecture respects SOLID principles
-- [Practical Examples](EXAMPLES.md) - 4 complete real-world examples with full code
-
-### Reference Projects
-This bundle was built following best practices from:
-- [dahromy/symfony-hexagonal-architecture](https://github.com/dahromy/symfony-hexagonal-architecture) - Reference Symfony implementation
-- [Sairyss/domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon) - DDD & Hexagonal patterns guide
+- [Complete Architecture Guide](ARCHITECTURE-EN.md) | [Guide Complet d'Architecture (FR)](ARCHITECTURE.md) - Detailed explanation of hexagonal architecture concepts with diagrams
+- [SOLID Principles Guide](SOLID-EN.md) | [Guide des Principes SOLID (FR)](SOLID.md) - How hexagonal architecture respects SOLID principles
+- [Practical Examples](EXAMPLES-EN.md) | [Exemples Pratiques (FR)](EXAMPLES.md) - Complete real-world examples with full code
 
 ### Learn More
 - [Doctrine YAML Mapping Reference](https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/yaml-mapping.html)
@@ -2560,35 +2508,6 @@ This bundle was built following best practices from:
 
 ---
 
-## 10. Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-### Development Setup
-```bash
-git clone https://github.com/ahmed-bhs/hexagonal-maker-bundle.git
-cd hexagonal-maker-bundle
-composer install
-```
-
----
-
-## 11. Credits
-
-**Author:** Ahmed EBEN HASSINE
-**Email:** ahmedbhs123@gmail.com
-**GitHub:** [@ahmed-bhs](https://github.com/ahmed-bhs)
-
----
-
-## 12. License
+## 9. License
 
 This software is published under the [MIT License](LICENSE).
-
----
-
-## ⭐ Star This Project
-
-If this bundle helps you build better applications with hexagonal architecture, please give it a star on GitHub! ⭐
-
-**Total Features:** 11 maker commands | Pure Domain | Full Layer Coverage | Production Ready 🚀
