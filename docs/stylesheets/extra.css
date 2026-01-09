@@ -1,0 +1,424 @@
+/* =================================================================
+   HEXAGONAL MAKER BUNDLE - ULTRA COMPACT DESIGN
+   Architecture Theme: Indigo (#6366F1) + Purple (#A855F7)
+   ================================================================= */
+
+:root {
+  /* Architecture Colors - Indigo/Purple Theme */
+  --hm-primary: #6366F1;        /* Indigo - Architecture */
+  --hm-primary-light: #818CF8;
+  --hm-primary-dark: #4F46E5;
+  --hm-accent: #A855F7;         /* Purple - Highlights */
+  --hm-accent-light: #C084FC;
+
+  /* Layer Colors (for diagrams) */
+  --hm-domain: #10B981;         /* Green - Pure Domain */
+  --hm-application: #3B82F6;    /* Blue - Application */
+  --hm-infrastructure: #EC4899; /* Pink - Infrastructure */
+  --hm-ui: #8B5CF6;            /* Purple - UI */
+
+  /* Status Colors */
+  --hm-success: #10B981;
+  --hm-warning: #F59E0B;
+  --hm-error: #EF4444;
+  --hm-info: #3B82F6;
+
+  /* Typography - ULTRA COMPACT */
+  --font-family-primary: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-mono: 'Roboto Mono', 'Courier New', monospace;
+
+  /* Spacing - ULTRA REDUCED */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.375rem;
+  --spacing-md: 0.5rem;
+  --spacing-lg: 0.75rem;
+  --spacing-xl: 1rem;
+
+  /* Animations */
+  --transition-speed: 0.2s;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =================================================================
+   ULTRA COMPACT TYPOGRAPHY
+   ================================================================= */
+
+.md-typeset {
+  font-family: var(--font-family-primary);
+  font-size: 0.8125rem;     /* 13px - ULTRA COMPACT */
+  line-height: 1.5;         /* ULTRA TIGHT */
+  color: var(--md-default-fg-color);
+}
+
+/* Paragraphs - Ultra Minimal Spacing */
+.md-typeset p {
+  margin: 0.5rem 0;         /* ULTRA REDUCED from 1rem */
+}
+
+/* Headings - Ultra Compact */
+.md-typeset h1 {
+  font-size: 1.625rem;      /* 26px - was 2.5rem/40px */
+  font-weight: 700;
+  margin-top: 1rem;         /* was 2rem */
+  margin-bottom: 0.625rem;  /* was 1.5rem */
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.md-typeset h2 {
+  font-size: 1.375rem;      /* 22px - was 2rem/32px */
+  font-weight: 600;
+  margin-top: 0.875rem;     /* was 1.75rem */
+  margin-bottom: 0.5rem;    /* was 1.25rem */
+  line-height: 1.3;
+}
+
+.md-typeset h3 {
+  font-size: 1.125rem;      /* 18px - was 1.5rem/24px */
+  font-weight: 600;
+  margin-top: 0.75rem;      /* was 1.5rem */
+  margin-bottom: 0.375rem;  /* was 1rem */
+  line-height: 1.4;
+}
+
+.md-typeset h4 {
+  font-size: 0.9375rem;     /* 15px - was 1.25rem/20px */
+  font-weight: 600;
+  margin-top: 0.625rem;     /* was 1.25rem */
+  margin-bottom: 0.25rem;   /* was 0.75rem */
+}
+
+.md-typeset h5,
+.md-typeset h6 {
+  font-size: 0.8125rem;     /* 13px - same as body */
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Lists - Ultra Compact */
+.md-typeset ul,
+.md-typeset ol {
+  margin: 0.5rem 0;         /* ULTRA REDUCED from 1rem */
+  padding-left: 1.25rem;    /* ULTRA REDUCED from 2rem */
+}
+
+.md-typeset li {
+  margin: 0.125rem 0;       /* ULTRA REDUCED from 0.5rem */
+}
+
+.md-typeset li > p {
+  margin: 0.125rem 0;       /* Minimal spacing in list items */
+}
+
+/* =================================================================
+   CODE BLOCKS - ULTRA COMPACT
+   ================================================================= */
+
+.md-typeset code {
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;       /* 12px - ULTRA COMPACT */
+  padding: 0.0625rem 0.25rem;  /* ULTRA MINIMAL */
+  background-color: var(--md-code-bg-color);
+  border-radius: 0.1875rem;
+}
+
+.md-typeset pre {
+  margin: 0.625rem 0;       /* ULTRA REDUCED from 1.5rem */
+  padding: 0.5rem 0.75rem;  /* ULTRA REDUCED from 1rem */
+  border-radius: 0.25rem;
+  overflow-x: auto;
+}
+
+.md-typeset pre > code {
+  font-size: 0.75rem;       /* 12px */
+  line-height: 1.4;         /* ULTRA TIGHT */
+  padding: 0;
+  background-color: transparent;
+}
+
+/* Code block with line numbers */
+.md-typeset .highlight {
+  margin: 0.625rem 0;       /* ULTRA REDUCED */
+  font-size: 0.75rem;       /* 12px */
+}
+
+/* Copy button positioning */
+.md-clipboard {
+  top: 0.25rem;
+  right: 0.25rem;
+}
+
+/* =================================================================
+   TABLES - ULTRA COMPACT
+   ================================================================= */
+
+.md-typeset table {
+  font-size: 0.75rem;       /* 12px - ULTRA COMPACT */
+  margin: 0.75rem 0;        /* ULTRA REDUCED */
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.md-typeset table th {
+  padding: 0.375rem 0.5rem; /* ULTRA REDUCED */
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--hm-primary) 0%, var(--hm-primary-dark) 100%);
+  color: white;
+}
+
+.md-typeset table td {
+  padding: 0.25rem 0.5rem;  /* ULTRA REDUCED */
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+/* =================================================================
+   ADMONITIONS - ULTRA COMPACT
+   ================================================================= */
+
+.md-typeset .admonition {
+  margin: 0.75rem 0;        /* ULTRA REDUCED from 1.5rem */
+  padding: 0.5rem 0.75rem;  /* ULTRA REDUCED from 1rem */
+  border-radius: 0.25rem;
+  font-size: 0.8125rem;     /* 13px */
+  border-left: 0.25rem solid;
+}
+
+.md-typeset .admonition-title {
+  margin: 0 0 0.375rem 0;   /* ULTRA REDUCED */
+  padding: 0;
+  font-size: 0.875rem;      /* 14px */
+  font-weight: 600;
+}
+
+/* =================================================================
+   HEADER & NAVIGATION - ULTRA COMPACT
+   ================================================================= */
+
+.md-header {
+  background: linear-gradient(135deg, var(--hm-primary) 0%, var(--hm-primary-dark) 100%);
+  box-shadow: 0 0.125rem 0.5rem rgba(99, 102, 241, 0.2);
+  height: 3rem;             /* ULTRA REDUCED from 4rem */
+}
+
+.md-tabs {
+  background: linear-gradient(to right, var(--hm-primary-dark), var(--hm-primary));
+  height: 2.5rem;           /* ULTRA REDUCED */
+}
+
+.md-tabs__link {
+  font-size: 0.8125rem;     /* 13px - ULTRA COMPACT */
+  padding: 0.5rem 0.75rem;  /* ULTRA REDUCED */
+  margin-top: 0.375rem;
+  opacity: 0.85;
+}
+
+/* =================================================================
+   SIDEBAR - ULTRA COMPACT
+   ================================================================= */
+
+.md-nav {
+  font-size: 0.75rem;       /* 12px - ULTRA COMPACT */
+  line-height: 1.4;
+}
+
+.md-nav__item {
+  padding: 0.0625rem 0;     /* ULTRA MINIMAL */
+}
+
+.md-nav__link {
+  padding: 0.25rem 0.75rem; /* ULTRA REDUCED */
+  margin: 0.0625rem 0;
+}
+
+/* =================================================================
+   CONTENT CONTAINER - ULTRA COMPACT
+   ================================================================= */
+
+.md-content {
+  padding: 0.75rem 1rem;    /* ULTRA REDUCED from 1.5rem 2rem */
+}
+
+.md-content__inner {
+  margin: 0 auto;
+  padding-top: 0.5rem;      /* ULTRA REDUCED */
+  padding-bottom: 0.75rem;
+}
+
+/* =================================================================
+   BADGES & TAGS
+   ================================================================= */
+
+.badge {
+  display: inline-block;
+  padding: 0.125rem 0.375rem;  /* ULTRA COMPACT */
+  font-size: 0.6875rem;     /* 11px */
+  font-weight: 600;
+  line-height: 1.3;
+  border-radius: 0.1875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge-domain { background-color: var(--hm-domain); color: white; }
+.badge-application { background-color: var(--hm-application); color: white; }
+.badge-infrastructure { background-color: var(--hm-infrastructure); color: white; }
+.badge-ui { background-color: var(--hm-ui); color: white; }
+
+/* =================================================================
+   BUTTONS & LINKS
+   ================================================================= */
+
+.md-typeset a {
+  color: var(--hm-primary);
+  text-decoration: none;
+  transition: color var(--transition-speed) var(--transition-timing);
+}
+
+.md-typeset a:hover {
+  color: var(--hm-accent);
+  text-decoration: underline;
+}
+
+.md-button {
+  padding: 0.375rem 0.75rem; /* ULTRA COMPACT */
+  font-size: 0.8125rem;      /* 13px */
+  border-radius: 0.25rem;
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.md-button--primary {
+  background: linear-gradient(135deg, var(--hm-primary) 0%, var(--hm-primary-dark) 100%);
+  color: white;
+}
+
+/* =================================================================
+   FOOTER - ULTRA COMPACT
+   ================================================================= */
+
+.md-footer {
+  background: linear-gradient(135deg, var(--hm-primary-dark) 0%, #312E81 100%);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.md-footer-meta {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 0;        /* ULTRA REDUCED */
+}
+
+/* =================================================================
+   SEARCH - ULTRA COMPACT
+   ================================================================= */
+
+.md-search__input {
+  font-size: 0.8125rem;     /* 13px */
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* =================================================================
+   CUSTOM COMPONENTS
+   ================================================================= */
+
+/* Feature Grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.75rem;             /* ULTRA REDUCED */
+  margin: 0.75rem 0;
+}
+
+.feature-card {
+  padding: 0.75rem;         /* ULTRA REDUCED */
+  border-radius: 0.375rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.feature-card:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 0.75rem rgba(99, 102, 241, 0.15);
+  border-color: var(--hm-primary-light);
+}
+
+/* Command Examples */
+.command-example {
+  background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+  color: #E0E7FF;
+  padding: 0.625rem;        /* ULTRA REDUCED */
+  border-radius: 0.25rem;
+  margin: 0.625rem 0;
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;
+}
+
+/* Architecture Diagram Labels */
+.layer-domain { color: var(--hm-domain); font-weight: 600; }
+.layer-application { color: var(--hm-application); font-weight: 600; }
+.layer-infrastructure { color: var(--hm-infrastructure); font-weight: 600; }
+.layer-ui { color: var(--hm-ui); font-weight: 600; }
+
+/* =================================================================
+   RESPONSIVE - ULTRA COMPACT ON MOBILE
+   ================================================================= */
+
+@media screen and (max-width: 76.1875em) {
+  .md-content {
+    padding: 0.5rem 0.75rem;  /* ULTRA REDUCED mobile */
+  }
+
+  .md-typeset {
+    font-size: 0.75rem;       /* 12px on mobile */
+  }
+
+  .md-typeset h1 {
+    font-size: 1.375rem;      /* 22px on mobile */
+  }
+
+  .md-typeset h2 {
+    font-size: 1.125rem;      /* 18px on mobile */
+  }
+}
+
+/* =================================================================
+   ANIMATIONS
+   ================================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.625rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.md-content__inner > * {
+  animation: fadeIn 0.3s var(--transition-timing);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 0.125rem solid var(--hm-accent);
+  outline-offset: 0.125rem;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

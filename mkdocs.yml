@@ -1,0 +1,242 @@
+site_name: Hexagonal Maker Bundle
+site_description: Symfony Maker Bundle for Hexagonal Architecture (Ports & Adapters). Generate CQRS Commands, Queries, Entities, and complete modular architecture with 19 maker commands.
+site_author: Ahmed EBEN HASSINE
+site_url: https://ahmed-bhs.github.io/hexagonal-maker-bundle/
+
+# SEO and Social
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ahmed-bhs
+      name: Ahmed EBEN HASSINE on GitHub
+    - icon: fontawesome/solid/mug-hot
+      link: https://www.buymeacoffee.com/w6ZhBSGX2
+      name: Buy Me a Coffee
+
+  generator: false
+
+  # SEO Tags - Complete
+  meta:
+    # Primary Meta Tags
+    - name: title
+      content: Hexagonal Maker Bundle - Symfony Bundle for Hexagonal Architecture
+    - name: description
+      content: Generate CQRS Commands, Queries, Entities, and complete hexagonal architecture. 19 maker commands for Symfony. Pure domain, SOLID principles, DDD patterns.
+    - name: keywords
+      content: hexagonal architecture, symfony, cqrs, ddd, domain driven design, maker bundle, ports and adapters, clean architecture, solid principles, php, symfony bundle, command query, maker, generator, scaffolding, code generation
+    - name: author
+      content: Ahmed EBEN HASSINE
+    - name: robots
+      content: index, follow
+    - name: language
+      content: English
+    - name: revisit-after
+      content: 7 days
+
+    # Open Graph / Facebook
+    - property: og:type
+      content: website
+    - property: og:site_name
+      content: Hexagonal Maker Bundle
+    - property: og:title
+      content: Hexagonal Maker Bundle - Symfony Bundle for Hexagonal Architecture
+    - property: og:description
+      content: Generate CQRS Commands, Queries, and complete hexagonal architecture with 19 maker commands for Symfony
+    - property: og:image
+      content: https://ahmed-bhs.github.io/hexagonal-maker-bundle/images/hexagonal-architecture.jpg
+    - property: og:image:alt
+      content: Hexagonal Architecture Diagram - Ports and Adapters Pattern
+    - property: og:url
+      content: https://ahmed-bhs.github.io/hexagonal-maker-bundle/
+    - property: og:locale
+      content: en_US
+
+    # Twitter Card
+    - name: twitter:card
+      content: summary_large_image
+    - name: twitter:title
+      content: Hexagonal Maker Bundle - Symfony Bundle for Hexagonal Architecture
+    - name: twitter:description
+      content: Generate CQRS Commands, Queries, and complete hexagonal architecture with 19 maker commands
+    - name: twitter:image
+      content: https://ahmed-bhs.github.io/hexagonal-maker-bundle/images/hexagonal-architecture.jpg
+    - name: twitter:creator
+      content: "@ahmed_bhs"
+    - name: twitter:site
+      content: "@ahmed_bhs"
+
+    # Additional SEO
+    - name: rating
+      content: General
+    - name: distribution
+      content: Global
+    - name: coverage
+      content: Worldwide
+    - name: target
+      content: developers, php developers, symfony developers, software architects
+    - name: HandheldFriendly
+      content: "True"
+    - name: MobileOptimized
+      content: "375"
+    - name: apple-mobile-web-app-capable
+      content: "yes"
+    - name: apple-mobile-web-app-status-bar-style
+      content: black-translucent
+
+    # Theme Color for Mobile
+    - name: theme-color
+      content: "#6366F1"
+    - name: msapplication-TileColor
+      content: "#6366F1"
+    - name: msapplication-navbutton-color
+      content: "#6366F1"
+
+    # Structured Data
+    - name: category
+      content: Software Development Tools
+
+repo_name: ahmed-bhs/hexagonal-maker-bundle
+repo_url: https://github.com/ahmed-bhs/hexagonal-maker-bundle
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  palette:
+    # Light mode - Architecture theme (Indigo/Purple)
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode - Architecture theme
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - content.tabs.link
+    - toc.follow
+
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+
+  logo: images/hexagonal-architecture.jpg
+  favicon: images/hexagonal-architecture.jpg
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-\.]+'
+  - minify:
+      minify_html: true
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Extra JavaScript
+extra_javascript:
+  - javascripts/extra.js
+
+# Copyright
+copyright: >
+  Copyright &copy; 2024-2026 Ahmed EBEN HASSINE -
+  <a href="https://github.com/ahmed-bhs/hexagonal-maker-bundle/blob/main/LICENSE">MIT License</a>
+
+# Navigation structure
+nav:
+  - Home: index.md
+
+  - Getting Started:
+      - Quick Start: getting-started/quick-start.md
+      - Installation: getting-started/installation.md
+      - First Module: getting-started/first-module.md
+
+  - User Guide:
+      - Architecture Guide: ARCHITECTURE.md
+      - Maker Commands: makers/commands.md
+      - SOLID Principles: SOLID.md
+      - Why Hexagonal: WHY-HEXAGONAL.md
+
+  - Examples:
+      - User Registration: examples/user-registration.md
+      - CRUD Module: examples/crud-module.md
+      - Testing: examples/testing.md
+
+  - Advanced:
+      - Doctrine Integration: advanced/doctrine.md
+      - Custom Templates: advanced/templates.md
+      - Shared Kernel: advanced/shared-kernel.md
+
+  - Contributing:
+      - Overview: contributing/overview.md
+      - Development: contributing/development.md
+
+  - About:
+      - FAQ: about/faq.md
+      - Changelog: about/changelog.md
+      - License: about/license.md
