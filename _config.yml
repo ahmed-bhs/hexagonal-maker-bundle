@@ -11,7 +11,7 @@ repository: ahmed-bhs/hexagonal-maker-bundle
 github_username: ahmed-bhs
 
 # Theme
-theme: just-the-docs
+remote_theme: just-the-docs/just-the-docs@v0.8.2
 
 # Just the Docs configuration
 # Logo
