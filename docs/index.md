@@ -260,7 +260,7 @@ MIT License - see [LICENSE](about/license.md) for details.
 
 **Created by [Ahmed EBEN HASSINE](https://github.com/ahmed-bhs)**
 
-[![Sponsor on GitHub](https://img.shields.io/static/v1?label=Sponsor&message=GitHub&logo=github&style=for-the-badge&color=blue){ width="200" }](https://github.com/sponsors/ahmed-bhs)
-[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png){ width="180" }](https://www.buymeacoffee.com/w6ZhBSGX2)
+<a href="https://github.com/sponsors/ahmed-bhs"><img src="https://img.shields.io/static/v1?label=Sponsor&message=GitHub&logo=github&style=for-the-badge&color=blue" alt="Sponsor on GitHub" width="200"></a>
+<a href="https://www.buymeacoffee.com/w6ZhBSGX2"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="180"></a>
 
 </div>
