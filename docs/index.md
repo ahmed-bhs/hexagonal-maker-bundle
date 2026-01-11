@@ -1,3 +1,11 @@
+---
+layout: home
+title: Home
+nav_order: 1
+description: "Symfony Maker Bundle for Hexagonal Architecture (Ports & Adapters) - 19 maker commands for pure domain, CQRS, and full layer coverage"
+permalink: /
+---
+
 # Hexagonal Maker Bundle
 
 <p align="center">

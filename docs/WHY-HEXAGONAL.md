@@ -1,3 +1,10 @@
+---
+layout: default
+title: Why Hexagonal Architecture
+parent: Advanced Topics
+nav_order: 1
+---
+
 # Why Hexagonal Architecture
 
 ## Table of Contents

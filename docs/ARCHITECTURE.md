@@ -1,3 +1,10 @@
+---
+layout: default
+title: Architecture Guide (FR)
+parent: Advanced Topics
+nav_order: 2
+---
+
 # Architecture Hexagonale - Guide Complet
 
 ## Table des matières

@@ -1,3 +1,10 @@
+---
+layout: default
+title: First Module
+parent: Getting Started
+nav_order: 3
+---
+
 # First Module Tutorial
 
 Complete step-by-step guide to build your first hexagonal module from scratch.

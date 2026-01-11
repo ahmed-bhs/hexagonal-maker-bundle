@@ -1,3 +1,10 @@
+---
+layout: default
+title: FAQ
+parent: About
+nav_order: 2
+---
+
 # FAQ - Frequently Asked Questions
 
 Quick answers to common questions about Hexagonal Maker Bundle.

@@ -1,3 +1,10 @@
+---
+layout: default
+title: Changelog
+parent: About
+nav_order: 1
+---
+
 # Changelog
 
 All notable changes to Hexagonal Maker Bundle are documented here.

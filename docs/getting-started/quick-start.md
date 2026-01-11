@@ -1,3 +1,10 @@
+---
+layout: default
+title: Quick Start
+parent: Getting Started
+nav_order: 2
+---
+
 # Quick Start
 
 Get started with Hexagonal Maker Bundle in 2 minutes.

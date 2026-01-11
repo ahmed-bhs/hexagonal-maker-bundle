@@ -1,3 +1,10 @@
+---
+layout: default
+title: User Registration
+parent: Examples
+nav_order: 1
+---
+
 # Example: User Registration Module
 
 Complete example of building a User Registration module with hexagonal architecture.

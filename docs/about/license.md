@@ -1,3 +1,10 @@
+---
+layout: default
+title: License
+parent: About
+nav_order: 3
+---
+
 # License
 
 Hexagonal Maker Bundle is open-source software licensed under the MIT License.

@@ -1,3 +1,10 @@
+---
+layout: default
+title: Testing Guide
+parent: Examples
+nav_order: 3
+---
+
 # Testing Examples
 
 Examples of testing hexagonal architecture with generated tests.

@@ -1,3 +1,10 @@
+---
+layout: default
+title: Development
+parent: Contributing
+nav_order: 2
+---
+
 # Development Guide
 
 Guide for developers contributing to Hexagonal Maker Bundle.

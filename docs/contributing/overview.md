@@ -1,3 +1,10 @@
+---
+layout: default
+title: Overview
+parent: Contributing
+nav_order: 1
+---
+
 # Contributing
 
 Thank you for considering contributing to Hexagonal Maker Bundle!

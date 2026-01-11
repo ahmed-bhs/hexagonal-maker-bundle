@@ -1,3 +1,10 @@
+---
+layout: default
+title: Installation
+parent: Getting Started
+nav_order: 1
+---
+
 # Installation
 
 Complete installation and configuration guide for Hexagonal Maker Bundle.

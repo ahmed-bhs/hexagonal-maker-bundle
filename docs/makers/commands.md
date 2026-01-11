@@ -1,3 +1,10 @@
+---
+layout: default
+title: Commands Reference
+parent: Maker Commands
+nav_order: 1
+---
+
 # Maker Commands Reference
 
 Complete reference for all 19 maker commands in Hexagonal Maker Bundle.

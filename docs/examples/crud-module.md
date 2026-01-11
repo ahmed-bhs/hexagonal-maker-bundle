@@ -1,3 +1,10 @@
+---
+layout: default
+title: CRUD Module
+parent: Examples
+nav_order: 2
+---
+
 # Example: CRUD Module
 
 Generate complete CRUD module with one command.

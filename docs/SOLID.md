@@ -1,3 +1,10 @@
+---
+layout: default
+title: SOLID Principles (FR)
+parent: Advanced Topics
+nav_order: 3
+---
+
 # Architecture Hexagonale & Principes SOLID
 
 Ce document explique en détail comment l'architecture hexagonale respecte les principes SOLID, ses avantages par rapport à une architecture en couches traditionnelle, et les risques d'une mauvaise architecture.
