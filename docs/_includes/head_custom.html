@@ -68,12 +68,32 @@
 
     let switcherHTML = '';
 
+    // Helper function to convert .md references to proper URLs
+    function convertToUrl(mdPath) {
+      if (!mdPath) return null;
+
+      // Handle index.md -> /
+      if (mdPath === 'index.md') return '/';
+      if (mdPath === 'fr/index.md') return '/fr/';
+
+      // Replace .md with .html and ensure proper path
+      let url = mdPath.replace('.md', '.html');
+
+      // Don't add baseurl if the path already includes it or starts with http
+      if (url.startsWith('http') || url.startsWith(baseUrl)) {
+        return url;
+      }
+
+      return baseUrl + '/' + url;
+    }
+
     if (currentLang === 'fr') {
       switcherHTML = '<span class="current-lang">🇫🇷 Français</span>' +
         '<span class="separator">|</span>';
 
       if (langRef && langRef.content) {
-        switcherHTML += '<a href="' + baseUrl + '/' + langRef.content.replace('.md', '.html') + '">🇬🇧 English</a>';
+        const url = convertToUrl(langRef.content) || baseUrl + '/';
+        switcherHTML += '<a href="' + url + '">🇬🇧 English</a>';
       } else {
         switcherHTML += '<a href="' + baseUrl + '/">🇬🇧 English</a>';
       }
@@ -82,7 +102,8 @@
         '<span class="separator">|</span>';
 
       if (langRef && langRef.content) {
-        switcherHTML += '<a href="' + baseUrl + '/' + langRef.content.replace('.md', '.html') + '">🇫🇷 Français</a>';
+        const url = convertToUrl(langRef.content) || baseUrl + '/fr/';
+        switcherHTML += '<a href="' + url + '">🇫🇷 Français</a>';
       } else {
         switcherHTML += '<a href="' + baseUrl + '/fr/">🇫🇷 Français</a>';
       }
