@@ -3,7 +3,7 @@ layout: default
 title: Home
 nav_order: 1
 lang: en
-lang_ref: fr/index.md
+lang_ref: /fr/
 description: "Symfony Maker Bundle for Hexagonal Architecture (Ports & Adapters) - 19 maker commands for pure domain, CQRS, and full layer coverage"
 permalink: /
 ---
