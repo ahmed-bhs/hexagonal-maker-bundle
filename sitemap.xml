@@ -2,102 +2,194 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/ARCHITECTURE/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/BILINGUAL_DOCS/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/GITHUB_PAGES_SETUP/</loc>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/SOLID/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/WHY-HEXAGONAL/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/about/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/about/changelog/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/about/faq/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/about/license/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/anti-patterns-pitfalls/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/cqrs-cost-benefit/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/dependency-injection-guide/</loc>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/doctrine/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/domain-vs-application/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/error-handling-strategy/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/factory-pattern-guide/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/port-design-principles/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/primary-secondary-adapters/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/repository-pattern/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/request-response-flow/</loc>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/shared-kernel/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/templates/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/contributing/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/contributing/development/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/contributing/overview/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/examples/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/examples/crud-module/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/examples/testing/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/examples/user-registration/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/GUIDE_CONTRIBUTION_TRADUCTION/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/adaptateurs-primary-secondary/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/anti-patterns-pieges/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/cqrs-analyse-couts-benefices/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/domaine-vs-application/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/flux-requete-reponse/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/injection-dependances-guide/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/pattern-factory-guide/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/principes-conception-ports/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/fr/advanced/strategie-gestion-erreurs/</loc>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/getting-started/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/getting-started/first-module/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/getting-started/installation/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/getting-started/quick-start/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/makers/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
     <url>
          <loc>https://ahmed-bhs.github.io/hexagonal-maker-bundle/makers/commands/</loc>
-         <lastmod>2026-01-11</lastmod>
+         <lastmod>2026-01-12</lastmod>
     </url>
 </urlset>
