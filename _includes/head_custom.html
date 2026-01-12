@@ -72,9 +72,14 @@
     function convertToUrl(mdPath) {
       if (!mdPath) return null;
 
+      // If it's already a path starting with /, use baseurl + path
+      if (mdPath.startsWith('/')) {
+        return baseUrl + mdPath;
+      }
+
       // Handle index.md -> /
-      if (mdPath === 'index.md') return '/';
-      if (mdPath === 'fr/index.md') return '/fr/';
+      if (mdPath === 'index.md') return baseUrl + '/';
+      if (mdPath === 'fr/index.md') return baseUrl + '/fr/';
 
       // Replace .md with .html and ensure proper path
       let url = mdPath.replace('.md', '.html');
