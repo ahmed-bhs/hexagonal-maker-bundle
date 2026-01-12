@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Request-Response Flow
 parent: Advanced Topics
 nav_order: 11

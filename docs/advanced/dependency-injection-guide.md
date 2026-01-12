@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Dependency Injection Configuration
 parent: Advanced Topics
 nav_order: 15

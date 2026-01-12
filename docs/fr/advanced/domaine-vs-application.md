@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Logique Domaine vs Application
 parent: Sujets Avancés
 nav_order: 10

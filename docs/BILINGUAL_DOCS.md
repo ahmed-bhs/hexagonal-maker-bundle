@@ -42,7 +42,7 @@ The `default_with_lang` layout includes the language switcher:
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: Your Page Title
 lang: en  # or 'fr'
 lang_ref: fr/page.md  # Optional: reference to translated version
@@ -60,7 +60,7 @@ Each page with bilingual support should include:
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: Home
 lang: en
 lang_ref: fr/index.md
@@ -71,7 +71,7 @@ lang_ref: fr/index.md
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: Accueil
 lang: fr
 lang_ref: index.md
@@ -93,7 +93,7 @@ The `_includes/language-switcher.html` component:
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: My New Page
 parent: Advanced Topics
 nav_order: 20
@@ -110,7 +110,7 @@ Content in English...
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: Ma Nouvelle Page
 parent: Sujets Avancés
 nav_order: 20
@@ -129,7 +129,7 @@ For French-only navigation sections, create `fr/advanced/index.md`:
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: Sujets Avancés
 nav_order: 3
 has_children: true
@@ -199,7 +199,7 @@ lang: fr
 ### When Adding New Content
 
 1. Create English version first (default)
-2. Add `layout: default_with_lang` and `lang: en`
+2. Add `layout: default` and `lang: en`
 3. Add `lang_ref` if French version exists or planned
 4. Create French version in `fr/` subdirectory
 5. Update both index pages to reference new content

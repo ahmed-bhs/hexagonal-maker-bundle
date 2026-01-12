@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Principes de Conception des Ports
 parent: Sujets Avancés
 nav_order: 12

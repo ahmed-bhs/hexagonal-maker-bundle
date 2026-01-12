@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Anti-Patterns et Pièges
 parent: Sujets Avancés
 nav_order: 18

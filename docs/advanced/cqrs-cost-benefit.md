@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: CQRS Cost-Benefit Analysis
 parent: Advanced Topics
 nav_order: 14

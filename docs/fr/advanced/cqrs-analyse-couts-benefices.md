@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: CQRS Analyse Coûts-Bénéfices
 parent: Sujets Avancés
 nav_order: 14

@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Factory Pattern Implementation
 parent: Advanced Topics
 nav_order: 16

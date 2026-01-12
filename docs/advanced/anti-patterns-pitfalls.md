@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Anti-Patterns and Pitfalls
 parent: Advanced Topics
 nav_order: 18

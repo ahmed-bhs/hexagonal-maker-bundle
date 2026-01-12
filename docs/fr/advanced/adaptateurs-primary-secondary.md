@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Adaptateurs Primary vs Secondary
 parent: Sujets Avancés
 nav_order: 13

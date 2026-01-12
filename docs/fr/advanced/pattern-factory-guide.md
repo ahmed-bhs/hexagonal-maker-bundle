@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Implémentation Pattern Factory
 parent: Sujets Avancés
 nav_order: 16

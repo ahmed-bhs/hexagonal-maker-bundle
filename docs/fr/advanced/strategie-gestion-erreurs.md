@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Stratégie de Gestion des Erreurs
 parent: Sujets Avancés
 nav_order: 17

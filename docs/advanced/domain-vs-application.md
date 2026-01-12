@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Domain vs Application Logic
 parent: Advanced Topics
 nav_order: 10

@@ -1,0 +1,94 @@
+<!-- Language Switcher for Bilingual Documentation -->
+{% if page.lang %}
+<meta name="page-lang" content="{{ page.lang }}">
+{% endif %}
+{% if page.lang_ref %}
+<meta name="lang-ref" content="{{ page.lang_ref }}">
+{% endif %}
+
+<style>
+  .language-switcher {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 999;
+    background: white;
+    border: 1px solid #eeebee;
+    border-radius: 6px;
+    padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+  }
+
+  .language-switcher a {
+    color: #5c5962 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+  }
+
+  .language-switcher a:hover {
+    color: #7253ed !important;
+    text-decoration: underline !important;
+  }
+
+  .language-switcher .current-lang {
+    color: #7253ed;
+    font-weight: 600;
+  }
+
+  .language-switcher .separator {
+    margin: 0 8px;
+    color: #eeebee;
+  }
+
+  @media (max-width: 768px) {
+    .language-switcher {
+      position: relative;
+      top: 0;
+      right: 0;
+      margin: 10px;
+      width: fit-content;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const pageLang = document.querySelector('meta[name="page-lang"]');
+    const langRef = document.querySelector('meta[name="lang-ref"]');
+
+    if (!pageLang) return; // No language metadata, skip switcher
+
+    const currentLang = pageLang.content;
+    const baseUrl = '{{ site.baseurl }}';
+
+    const switcher = document.createElement('div');
+    switcher.className = 'language-switcher';
+
+    let switcherHTML = '';
+
+    if (currentLang === 'fr') {
+      switcherHTML = '<span class="current-lang">🇫🇷 Français</span>' +
+        '<span class="separator">|</span>';
+
+      if (langRef && langRef.content) {
+        switcherHTML += '<a href="' + baseUrl + '/' + langRef.content.replace('.md', '.html') + '">🇬🇧 English</a>';
+      } else {
+        switcherHTML += '<a href="' + baseUrl + '/">🇬🇧 English</a>';
+      }
+    } else {
+      switcherHTML = '<span class="current-lang">🇬🇧 English</span>' +
+        '<span class="separator">|</span>';
+
+      if (langRef && langRef.content) {
+        switcherHTML += '<a href="' + baseUrl + '/' + langRef.content.replace('.md', '.html') + '">🇫🇷 Français</a>';
+      } else {
+        switcherHTML += '<a href="' + baseUrl + '/fr/">🇫🇷 Français</a>';
+      }
+    }
+
+    switcher.innerHTML = switcherHTML;
+    document.body.appendChild(switcher);
+  });
+</script>

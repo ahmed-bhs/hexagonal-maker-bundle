@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Port Interface Design Principles
 parent: Advanced Topics
 nav_order: 12

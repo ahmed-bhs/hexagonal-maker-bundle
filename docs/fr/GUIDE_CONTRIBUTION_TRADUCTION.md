@@ -1,5 +1,5 @@
 ---
-layout: default_with_lang
+layout: default
 title: Guide de Contribution - Traductions
 nav_order: 10
 lang: fr
@@ -108,7 +108,7 @@ Ouvrez `docs/fr/advanced/domain-vs-application.md` et commencez la traduction.
 
 ```yaml
 ---
-layout: default_with_lang
+layout: default
 title: Domain vs Application Logic  # ← Traduire le titre
 parent: Sujets Avancés             # ← Traduire "Advanced Topics"
 nav_order: 10
