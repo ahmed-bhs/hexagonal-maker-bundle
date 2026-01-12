@@ -1,0 +1,42 @@
+<!-- Language Switcher Component -->
+<div class="language-switcher" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 8px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  {% assign current_lang = page.lang | default: 'en' %}
+
+  {% if current_lang == 'fr' %}
+    <!-- Current: French, show English link -->
+    <span style="color: #666; font-size: 14px;">🇫🇷 Français</span>
+    <span style="margin: 0 5px;">|</span>
+    {% if page.lang_ref %}
+      <a href="{{ site.baseurl }}/{{ page.lang_ref }}" style="color: #0066cc; text-decoration: none; font-size: 14px;">🇬🇧 English</a>
+    {% else %}
+      <a href="{{ site.baseurl }}/" style="color: #0066cc; text-decoration: none; font-size: 14px;">🇬🇧 English</a>
+    {% endif %}
+  {% else %}
+    <!-- Current: English, show French link -->
+    <span style="color: #666; font-size: 14px;">🇬🇧 English</span>
+    <span style="margin: 0 5px;">|</span>
+    {% if page.lang_ref %}
+      <a href="{{ site.baseurl }}/fr/{{ page.lang_ref }}" style="color: #0066cc; text-decoration: none; font-size: 14px;">🇫🇷 Français</a>
+    {% else %}
+      <a href="{{ site.baseurl }}/fr/" style="color: #0066cc; text-decoration: none; font-size: 14px;">🇫🇷 Français</a>
+    {% endif %}
+  {% endif %}
+</div>
+
+<style>
+  .language-switcher {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .language-switcher a:hover {
+    text-decoration: underline !important;
+  }
+
+  @media (max-width: 768px) {
+    .language-switcher {
+      position: static;
+      margin: 10px;
+      width: fit-content;
+    }
+  }
+</style>

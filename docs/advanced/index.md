@@ -13,10 +13,10 @@ Deep dive into advanced hexagonal architecture patterns and techniques.
 
 - Architecture patterns and best practices
 - Doctrine configuration and YAML mapping
+- **Repository pattern and why not to use EntityManager directly**
 - Testing strategies (unit, integration, functional)
 - Event-driven architecture with domain events
-- CQRS implementation patterns
-- Repository patterns and alternatives
+- CQRS implementation patterns with Query Functions
 - Value objects and immutability
 - Shared kernel organization
 

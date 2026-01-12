@@ -1,7 +1,9 @@
 ---
-layout: home
+layout: default_with_lang
 title: Home
 nav_order: 1
+lang: en
+lang_ref: fr/index.md
 description: "Symfony Maker Bundle for Hexagonal Architecture (Ports & Adapters) - 19 maker commands for pure domain, CQRS, and full layer coverage"
 permalink: /
 ---
@@ -107,61 +109,61 @@ Generate complete hexagonal architecture with a single command:
 
 ## Example: Complete User Module
 
-=== "Step 1: Domain"
+### Step 1: Domain
 
-    **Generate pure domain entities**
+**Generate pure domain entities**
 
-    ```bash
-    bin/console make:hexagonal:entity user/account User
-    bin/console make:hexagonal:value-object user/account Email
-    bin/console make:hexagonal:exception user/account InvalidEmailException
-    ```
+```bash
+bin/console make:hexagonal:entity user/account User
+bin/console make:hexagonal:value-object user/account Email
+bin/console make:hexagonal:exception user/account InvalidEmailException
+```
 
-    **Generated:**
-    - `Domain/Model/User.php` (pure PHP)
-    - `Domain/ValueObject/Email.php`
-    - `Domain/Exception/InvalidEmailException.php`
+**Generated:**
+- `Domain/Model/User.php` (pure PHP)
+- `Domain/ValueObject/Email.php`
+- `Domain/Exception/InvalidEmailException.php`
 
-=== "Step 2: Application"
+### Step 2: Application
 
-    **Generate use cases and commands**
+**Generate use cases and commands**
 
-    ```bash
-    bin/console make:hexagonal:repository user/account User
-    bin/console make:hexagonal:command user/account register --factory
-    bin/console make:hexagonal:query user/account find-by-id
-    ```
+```bash
+bin/console make:hexagonal:repository user/account User
+bin/console make:hexagonal:command user/account register --factory
+bin/console make:hexagonal:query user/account find-by-id
+```
 
-    **Generated:**
-    - `Domain/Port/UserRepositoryInterface.php`
-    - `Application/Register/RegisterCommand.php`
-    - `Application/Register/RegisterCommandHandler.php`
-    - `Application/FindById/FindByIdQuery.php`
+**Generated:**
+- `Domain/Port/UserRepositoryInterface.php`
+- `Application/Register/RegisterCommand.php`
+- `Application/Register/RegisterCommandHandler.php`
+- `Application/FindById/FindByIdQuery.php`
 
-=== "Step 3: Infrastructure"
+### Step 3: Infrastructure
 
-    **Auto-generated adapters**
+**Auto-generated adapters**
 
-    ```bash
-    # Already generated with repository command!
-    ```
+```bash
+# Already generated with repository command!
+```
 
-    **Generated:**
-    - `Infrastructure/Persistence/Doctrine/DoctrineUserRepository.php`
-    - `Infrastructure/Persistence/Doctrine/Orm/Mapping/User.orm.yml`
+**Generated:**
+- `Infrastructure/Persistence/Doctrine/DoctrineUserRepository.php`
+- `Infrastructure/Persistence/Doctrine/Orm/Mapping/User.orm.yml`
 
-=== "Step 4: UI"
+### Step 4: UI
 
-    **Generate controllers and forms**
+**Generate controllers and forms**
 
-    ```bash
-    bin/console make:hexagonal:controller user/account RegisterUser /users/register
-    bin/console make:hexagonal:form user/account User
-    ```
+```bash
+bin/console make:hexagonal:controller user/account RegisterUser /users/register
+bin/console make:hexagonal:form user/account User
+```
 
-    **Generated:**
-    - `UI/Http/Web/Controller/RegisterUserController.php`
-    - `UI/Http/Web/Form/UserType.php`
+**Generated:**
+- `UI/Http/Web/Controller/RegisterUserController.php`
+- `UI/Http/Web/Form/UserType.php`
 
 ---
 
@@ -225,6 +227,8 @@ bin/console make:hexagonal:crud blog/post Post --with-tests --with-id-vo
 
 ## Documentation
 
+### Core Guides
+
 | Guide | Description |
 |-------|-------------|
 | [**Quick Start**](getting-started/quick-start.md) | Install and generate your first module in 2 minutes |
@@ -233,6 +237,22 @@ bin/console make:hexagonal:crud blog/post Post --with-tests --with-id-vo
 | [**Why Hexagonal**](WHY-HEXAGONAL.md) | Business case and technical benefits |
 | [**SOLID Principles**](SOLID.md) | How hexagonal architecture enforces SOLID |
 | [**Examples**](examples/user-registration.md) | Real-world examples and use cases |
+
+### Advanced Topics 🆕
+
+In-depth guides covering critical aspects of hexagonal architecture:
+
+| Guide | Description |
+|-------|-------------|
+| [**Domain vs Application Logic**](advanced/domain-vs-application.md) | Decision guide: where to place your business logic |
+| [**Request-Response Flow**](advanced/request-response-flow.md) | Complete end-to-end flow with diagrams |
+| [**Port Design Principles**](advanced/port-design-principles.md) | How to design effective port interfaces |
+| [**Primary vs Secondary Adapters**](advanced/primary-secondary-adapters.md) | Understanding the two sides of the hexagon |
+| [**CQRS: Cost-Benefit Analysis**](advanced/cqrs-cost-benefit.md) | When to use CQRS (and when to avoid it) |
+| [**Dependency Injection Guide**](advanced/dependency-injection-guide.md) | Complete Symfony configuration |
+| [**Factory Pattern Guide**](advanced/factory-pattern-guide.md) | Complete factory implementation |
+| [**Error Handling Strategy**](advanced/error-handling-strategy.md) | Exception handling and error management |
+| [**Anti-Patterns & Pitfalls**](advanced/anti-patterns-pitfalls.md) | Avoid common mistakes |
 
 ---
 
