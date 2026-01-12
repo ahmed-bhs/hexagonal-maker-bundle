@@ -16,6 +16,19 @@
   <a href="https://symfony.com/"><img src="https://img.shields.io/badge/symfony-6.4%20%7C%207.x-blue.svg" alt="Symfony"></a>
 </p>
 
+<div align="center">
+
+### ☕ Support This Project
+
+If this project helped you or saved you time, consider buying me a coffee!
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/w6ZhBSGX2)
+
+*Your support helps maintain this project and create more learning resources!* ❤️
+
+</div>
+
+
 <p align="center">
   ✨ <strong>19 maker commands</strong> | 💎 <strong>Pure Domain</strong> | 🎯 <strong>CQRS Pattern</strong> | 🏗️ <strong>Full Layer Coverage</strong> | 🔄 <strong>Async/Queue Support</strong>
 </p>
