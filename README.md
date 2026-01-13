@@ -2569,7 +2569,14 @@ src/Shared/Infrastructure/Persistence/Migrations/Version20250106120000.php
 
 ## 7. Best Practices
 
-See [ARCHITECTURE-EN.md - Best Practices](ARCHITECTURE-EN.md#7-best-practices) | [ARCHITECTURE.md - Bonnes pratiques (FR)](ARCHITECTURE.md#7-bonnes-pratiques) for detailed best practices with code examples.
+### 7.1 Best Practices & Design Principles
+
+**📚 Complete Documentation:**
+- [**Best Practices Guide**](https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/) - Architecture patterns and implementation guidelines
+- [**SOLID Principles**](https://ahmed-bhs.github.io/hexagonal-maker-bundle/SOLID.md) - How hexagonal architecture enforces SOLID principles
+- [**Domain vs Application Logic**](https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/domain-vs-application.html) - Decision guide for business logic placement
+- [**Error Handling Strategy**](https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/error-handling-strategy.html) - Exception handling best practices
+- [**Anti-Patterns to Avoid**](https://ahmed-bhs.github.io/hexagonal-maker-bundle/advanced/anti-patterns-pitfalls.html) - Common mistakes and how to avoid them
 
 **Quick summary:**
 - Keep Domain pure (zero framework dependencies)
@@ -2577,6 +2584,8 @@ See [ARCHITECTURE-EN.md - Best Practices](ARCHITECTURE-EN.md#7-best-practices) |
 - CQRS separation (Commands change state, Queries read data)
 - Port/Adapter pattern (interfaces in domain, implementations in infrastructure)
 - Factories for complex creation
+
+See [ARCHITECTURE-EN.md - Best Practices](ARCHITECTURE-EN.md#7-best-practices) | [ARCHITECTURE.md - Bonnes pratiques (FR)](ARCHITECTURE.md#7-bonnes-pratiques) for detailed best practices with code examples.
 
 ---
 
